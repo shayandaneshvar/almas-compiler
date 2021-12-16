@@ -3,61 +3,72 @@ grammar ALMAS;
 
 /* 	PARSER */
 
-program : (PROGRAM_BODY)* ;
 
-PROGRAM_BODY : STATEMENTS | FUNCTION ;
 
-ASSIGNMENT : 
-	STRING_TYPE IDENTIFIER STRING_ASSIGNMENT |
-	DECIMAL_TYPE IDENTIFIER DECIMAL_ASSIGNMENT |
-	BOOLEAN_TYPE IDENTIFIER BOOLEAN_ASSIGNMENT ;
+program : (program_body)* ;
+func_inputs : LEFT_P (primitive_type IDENTIFIER more_func_inputs?)?  RIGHT_P ;
+program_body : statements | function ;
+
+
+assignment : 
+	STRING_TYPE IDENTIFIER string_assignment |
+	DECIMAL_TYPE IDENTIFIER decimal_assignment |
+	BOOLEAN_TYPE IDENTIFIER boolean_assignment ;
 	
-STRING_ASSIGNMENT: ASSIGNMENT (STRING | FUNCTION_CALL | STRING_CAST);
-DECIMAL_ASSIGNMENT: ASSIGNMENT (DECIMAL | FUNCTION_CALL | DECIMAL_CAST) ;
-BOOLEAN_ASSIGNMENT: ASSIGNMENT (BOOLEAN | EXPRESSIONS | FUNCTION_CALL | BOOLEAN_CAST) ;
+string_assignment: ASSIGNMENT_OP (STRING | function_call | string_cast | input);
+decimal_assignment: ASSIGNMENT_OP (decimal_expressions | function_call | decimal_cast | input) ;
+boolean_assignment: ASSIGNMENT_OP (BOOLEAN | expressions | function_call | boolean_cast |input) ;
 
-IF :  BARE_IF | BARE_IF ELIF | BARE_IF ELSE ;
-BARE_IF: IF_SYMBOL LEFT_P EXPRESSIONS RIGHT_P CURLY_LEFT STATEMENTS CURLY_RIGHT ;
-ELIF : BARE_ELIF | BARE_ELIF ELSE;
-BARE_ELIF: ELSE_IF_SYMBOL LEFT_P EXPRESSIONS RIGHT_P CURLY_LEFT STATEMENTS CURLY_RIGHT ELIF ;
-ELSE : ELSE_SYMBOL CURLY_LEFT STATEMENTS CURLY_RIGHT;
+if_st :  bare_if elif? else_st? ;
+bare_if: IF_SYMBOL LEFT_P expressions RIGHT_P CURLY_LEFT statements? CURLY_RIGHT ;
+elif: ELSE_IF_SYMBOL LEFT_P expressions RIGHT_P CURLY_LEFT statements? CURLY_RIGHT elif? ;
+else_st : ELSE_SYMBOL CURLY_LEFT statements? CURLY_RIGHT;
 
-EXPRESSIONS:  EXPRESSION | EXPRESSION BINARY_BOOLEAN_OP EXPRESSIONS;
-EXPRESSION:  RELOP_EXPRESSION | UNARY_OP* IDENTIFIER | UNARY_OP* BOOLEAN | UNARY_OP* LEFT_P EXPRESSION RIGHT_P;
-RELOP_EXPRESSION:
-	(DECIMAL|IDENTIFIER) RELATIONAL_OPERATOR (DECIMAL|IDENTIFIER) 
-	| UNARY_OP* LEFT_P RELOP_EXPRESSION RIGHT_P;
-	
-STATEMENTS: (ASSIGNMENT | IF | LOOP)+ ;
-LOOP : FOR_SYMBOL LEFT_P IDENTIFIER COLON DECIMAL? COLON DECIMAL COLON DECIMAL? RIGHT_P CURLY_LEFT LOOP_STATEMENTS CURLY_RIGHT ;
-LOOP_STATEMENTS: (STATEMENTS | CONTINUE_SYMBOL | BREAK_SYMBOL)+ ;
+expressions:  expression ((BINARY_BOOLEAN_OP|EQUAL) expressions)?;
+expression:  relop_expression | UNARY_OP* IDENTIFIER | UNARY_OP* BOOLEAN | UNARY_OP* LEFT_P expression RIGHT_P;
+relop_expression:
+	decimal_expressions RELATIONAL_OPERATOR decimal_expressions 
+	| (decimal_expressions|STRING|BOOLEAN|IDENTIFIER) EQUAL (decimal_expressions|STRING|BOOLEAN| IDENTIFIER)
+	| UNARY_OP* LEFT_P relop_expression RIGHT_P;
 
-WS : ( ' ' | '\t' | '\r' | '\n') -> skip;
+decimal_expressions: decimal_expression (BINARY_DECIMAL_OP decimal_expressions)?;
+decimal_expression: (IDENTIFIER|DECIMAL) (BINARY_DECIMAL_OP (IDENTIFIER|DECIMAL))? | LEFT_P (IDENTIFIER|DECIMAL) (BINARY_DECIMAL_OP (IDENTIFIER|DECIMAL))? RIGHT_P ;
 
-PRIMITIVE_TYPE : STRING_TYPE | DECIMAL_TYPE | BOOLEAN_TYPE;
+statements: (assignment | if_st | loop | function_call | print | input)+ ;
+loop : FOR_SYMBOL LEFT_P IDENTIFIER COLON decimal_expressions? COLON decimal_expressions COLON decimal_expressions? RIGHT_P CURLY_LEFT loop_statements? CURLY_RIGHT ;
+loop_statements: (statements | CONTINUE_SYMBOL | BREAK_SYMBOL)+ ;
 
-RETURN_TYPE : PRIMITIVE_TYPE | VOID_TYPE;
-FUNCTION : FUNCTION_SYMBOL RETURN_TYPE IDENTIFIER LEFT_P FUNC_INPUTS? RIGHT_P CURLY_LEFT STATEMENTS RETURN_ST? CURLY_RIGHT;
+print: PRINT_OP LEFT_P (decimal_expressions|STRING|BOOLEAN|IDENTIFIER) RIGHT_P;
+input: INPUT_OP LEFT_P (STRING|IDENTIFIER) RIGHT_P;
+
+return_type : primitive_type | VOID_TYPE;
+function : FUNCTION_SYMBOL return_type IDENTIFIER func_inputs CURLY_LEFT statements? return_st? CURLY_RIGHT;
 		   
-FUNCTION_CALL : IDENTIFIER LEFT_P FUNC_ARGS? RIGHT_P;
+function_call : IDENTIFIER LEFT_P func_args? RIGHT_P;
 
-FUNC_INPUTS : PRIMITIVE_TYPE IDENTIFIER MORE_FUNC_INPUTS? ;
-MORE_FUNC_INPUTS : COMMA PRIMITIVE_TYPE IDENTIFIER MORE_FUNC_INPUTS? ;
+more_func_inputs : COMMA primitive_type IDENTIFIER more_func_inputs? ;
 
-RETURN_ST : RETURN_SYMBOL (IDENTIFIER|DECIMAL|STRING|BOOLEAN|EXPRESSIONS);
+return_st : RETURN_SYMBOL (IDENTIFIER|decimal_expressions|STRING|BOOLEAN|expressions);
 
-FUNC_ARGS : (IDENTIFIER|DECIMAL|STRING|BOOLEAN|EXPRESSIONS) MORE_FUNC_ARGS? ;
+func_args : (IDENTIFIER|decimal_expressions|STRING|BOOLEAN|expressions) more_func_args? ;
 
-MORE_FUNC_ARGS : COMMA (IDENTIFIER|DECIMAL|STRING|BOOLEAN|EXPRESSIONS) MORE_FUNC_ARGS?;
+more_func_args : COMMA (IDENTIFIER|decimal_expressions|STRING|BOOLEAN|expressions) more_func_args?;
 
-BOOLEAN_CAST: BOOLEAN_CAST_SYMBOL LEFT_P IDENTIFIER RIGHT_P ; /* can be improved*/
-DECIMAL_CAST: DECIMAL_CAST_SYMBOL LEFT_P IDENTIFIER RIGHT_P;
-STRING_CAST:  STRING_CAST_SYMBOL LEFT_P IDENTIFIER RIGHT_P;
+boolean_cast: BOOLEAN_CAST_SYMBOL LEFT_P IDENTIFIER RIGHT_P ; /* can be improved*/
+decimal_cast: DECIMAL_CAST_SYMBOL LEFT_P IDENTIFIER RIGHT_P;
+string_cast:  STRING_CAST_SYMBOL LEFT_P IDENTIFIER RIGHT_P;
+
+primitive_type : STRING_TYPE | DECIMAL_TYPE | BOOLEAN_TYPE;
 
 
 /*		 LEXER			 */
 
-IDENTIFIER: ('a'..'z'|'A'..'Z') (NUMBER | 'a'..'z' | 'A'..'Z')*;
+
+
+
+WS : ( ' ' | '\t' | '\r' | '\n') -> skip;
+
+
 
 DECIMAL_TYPE: '#' ;
 STRING_TYPE: '$';
@@ -67,27 +78,25 @@ VOID_TYPE: '_';
 ASSIGNMENT_OP: '=';
 RELATIONAL_OPERATOR: '>' | '<' | '>=' | '<=';
 
-MUL: '*';
-DIV: '/';
-ADD: '+';
-SUB: '-';
-MOD: '%';
-INTEGER_DIV: '//';
+fragment MUL: '*';
+fragment DIV: '/';
+fragment ADD: '+';
+fragment SUB: '-';
+fragment MOD: '%';
+fragment INTEGER_DIV: '//';
 
-AND: '&' ;
-OR: '|' ;
-XOR: '^' ;
-NOT: '!' ;
+fragment AND: '&' ;
+fragment OR: '|' ;
+fragment XOR: '^' ;
 
-UNARY_OP: NOT;
-BINARY_BOOLEAN_OP: AND | OR | XOR; 
+fragment NOT: '!' ;
 
 EQUAL: 'is';
 
 COMMA: ',';
 COLON: ':';
-CURLY_RIGHT: '{';
-CURLY_LEFT: '}';
+CURLY_RIGHT: '}';
+CURLY_LEFT: '{';
 LEFT_P: '(';
 RIGHT_P: ')';
 
@@ -105,14 +114,23 @@ RETURN_SYMBOL: 'ret';
 CONTINUE_SYMBOL: 'go';
 BREAK_SYMBOL: 'break';
 
-SIGN : ADD | SUB ;
-NUMBER : ('0'..'9')+ ;
+fragment SIGN : ADD | SUB ;
+fragment NUMBER : ('0'..'9')+ ;
 DECIMAL : SIGN? NUMBER | SIGN? NUMBER '.' NUMBER | SIGN? '.' NUMBER ;
 
-STRING_LITERAL: '"' ;
-STRING: STRING_LITERAL ANYCHAR* STRING_LITERAL;
-ANYCHAR: ~('"') ;
+
 
 BOOLEAN_CAST_SYMBOL: '@?';
 STRING_CAST_SYMBOL: '@$';
 DECIMAL_CAST_SYMBOL: '@#';
+
+UNARY_OP: NOT;
+BINARY_BOOLEAN_OP: AND | OR | XOR; 
+
+BINARY_DECIMAL_OP: ADD | SUB | MUL | DIV | INTEGER_DIV | MOD ;
+
+IDENTIFIER: ('a'..'z'|'A'..'Z') (NUMBER | 'a'..'z' | 'A'..'Z')*;
+
+fragment STRING_LITERAL: '"' ;
+STRING: STRING_LITERAL ANYCHAR* STRING_LITERAL;
+fragment ANYCHAR: ~('"') ;
