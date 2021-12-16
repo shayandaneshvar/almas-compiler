@@ -5,7 +5,7 @@ grammar ALMAS;
 
 
 
-program : (program_body)* ;
+program : (program_body)* EOF;
 func_inputs : LEFT_P (primitive_type IDENTIFIER more_func_inputs?)?  RIGHT_P ;
 program_body : statements | function ;
 
