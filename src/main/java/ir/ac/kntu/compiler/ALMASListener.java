@@ -1,4 +1,4 @@
-package ir.ac.kntu;// Generated from ALMAS.g by ANTLR 4.9.3
+package ir.ac.kntu.compiler;// Generated from ALMAS.g by ANTLR 4.9.3
 import org.antlr.v4.runtime.tree.ParseTreeListener;
 
 /**

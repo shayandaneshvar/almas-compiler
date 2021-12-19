@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+
+<AnchorPane prefHeight="600.0" prefWidth="800.0"
+            style="-fx-background-color: #FFE194;"
+            xmlns="http://javafx.com/javafx/11.0.1"
+            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ir.ac.kntu.graphics.EditorPresenter">
+   <TextArea fx:id="codeTextArea" layoutX="48.0" layoutY="51.0"
+             prefHeight="374.0" prefWidth="704.0" promptText="Your Codes..."
+             style="-fx-background-color: #FFB319;">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </TextArea>
+   <TextArea fx:id="terminalTextArea" editable="false" focusTraversable="false"
+             layoutX="48.0" layoutY="452.0" prefHeight="121.0" prefWidth="704.0"
+             promptText="Terminal" style="-fx-border-color: #FFB319;">
+      <font>
+         <Font size="18.0"/>
+      </font>
+   </TextArea>
+   <Button fx:id="compileButton" layoutX="664.0" layoutY="7.0"
+           mnemonicParsing="false" onMouseClicked="#compile" prefHeight="36.0"
+           prefWidth="88.0" style="-fx-background-color: #FFB319;"
+           text="Compile" textFill="#e8f6ef">
+      <font>
+         <Font name="System Bold" size="14.0"/>
+      </font>
+   </Button>
+</AnchorPane>
