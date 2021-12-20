@@ -1,35 +1,45 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
 <?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-
-<AnchorPane prefHeight="600.0" prefWidth="800.0"
-            style="-fx-background-color: #FFE194;"
-            xmlns="http://javafx.com/javafx/11.0.1"
-            xmlns:fx="http://javafx.com/fxml/1" fx:controller="ir.ac.kntu.graphics.EditorPresenter">
-   <TextArea fx:id="codeTextArea" layoutX="48.0" layoutY="51.0"
-             prefHeight="374.0" prefWidth="704.0" promptText="Your Codes..."
-             style="-fx-background-color: #FFB319;">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" style="-fx-background-color: #FFE194;" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ir.ac.kntu.graphics.EditorPresenter">
+   <Rectangle arcHeight="5.0" arcWidth="5.0" fill="TRANSPARENT" height="46.0" layoutX="48.0" layoutY="3.0" stroke="#ffb319" strokeType="INSIDE" width="704.0" />
+   <TextArea fx:id="codeTextArea" layoutX="48.0" layoutY="57.0" prefHeight="374.0" prefWidth="704.0" promptText="Your Codes..." style="-fx-background-color: #FFB319;">
       <font>
-         <Font size="18.0"/>
+         <Font size="18.0" />
       </font>
    </TextArea>
-   <TextArea fx:id="terminalTextArea" editable="false" focusTraversable="false"
-             layoutX="48.0" layoutY="452.0" prefHeight="121.0" prefWidth="704.0"
-             promptText="Terminal" style="-fx-border-color: #FFB319;">
+   <TextArea fx:id="terminalTextArea" editable="false" focusTraversable="false" layoutX="48.0" layoutY="452.0" opacity="0.9" prefHeight="121.0" prefWidth="704.0" promptText="Terminal" style="-fx-border-color: #FFB319;">
       <font>
-         <Font size="18.0"/>
+         <Font size="16.0" />
       </font>
    </TextArea>
-   <Button fx:id="compileButton" layoutX="664.0" layoutY="7.0"
-           mnemonicParsing="false" onMouseClicked="#compile" prefHeight="36.0"
-           prefWidth="88.0" style="-fx-background-color: #FFB319;"
-           text="Compile" textFill="#e8f6ef">
+   <Button fx:id="compileButton" layoutX="568.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#compile" prefHeight="36.0" prefWidth="88.0" style="-fx-background-color: #FFB319;" text="Compile" textFill="#e8f6ef">
       <font>
-         <Font name="System Bold" size="14.0"/>
+         <Font name="System Bold" size="14.0" />
+      </font>
+   </Button>
+   <CheckBox fx:id="verboseCheckbox" layoutX="481.0" layoutY="16.0" mnemonicParsing="false" prefHeight="20.0" prefWidth="81.0" text="Verbose">
+      <font>
+         <Font size="14.0" />
+      </font>
+   </CheckBox>
+   <Button fx:id="runButton" layoutX="660.0" layoutY="7.0" mnemonicParsing="false" onMouseClicked="#run" prefHeight="36.0" prefWidth="88.0" style="-fx-background-color: #FFB319;" text="Run" textFill="#e8f6ef">
+      <font>
+         <Font name="System Bold" size="14.0" />
+      </font>
+   </Button>
+   <TextField fx:id="sourceTextField" editable="false" layoutX="171.0" layoutY="13.0" onMouseClicked="#selectSource" promptText="Source" />
+   <TextField fx:id="targetTextField" editable="false" layoutX="322.0" layoutY="13.0" onMouseClicked="#selectTarget" promptText="Target" />
+   <Button fx:id="importButton" layoutX="52.0" layoutY="8.0" mnemonicParsing="false" onMouseClicked="#importFromSource" prefHeight="36.0" prefWidth="115.0" style="-fx-background-color: #FFB319;" text="Import Source" textFill="#e8f6ef">
+      <font>
+         <Font name="System Bold" size="14.0" />
       </font>
    </Button>
 </AnchorPane>

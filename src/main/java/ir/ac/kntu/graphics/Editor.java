@@ -10,28 +10,45 @@ import javafx.stage.Stage;
 import javafx.stage.StageStyle;
 
 import java.util.Objects;
+import java.util.Optional;
 
 public class Editor extends Application {
+    private static Editor INSTANCE;
     private Scene scene;
+    private Stage stage;
+
+    public static Editor getInstance(){
+        return Optional.of(INSTANCE).get();
+    }
+
+    public Scene getScene() {
+        return scene;
+    }
+
+    public Stage getStage() {
+        return stage;
+    }
 
     @Override
     public void init() throws Exception {
         AnchorPane root = FXMLLoader.load(Objects.requireNonNull(getClass().getResource("/view/editor.fxml")));
         scene = new Scene(root, 800, 600, false, SceneAntialiasing.BALANCED);
+        INSTANCE = this;
     }
 
     @Override
     public void start(Stage stage) {
+        this.stage = stage;
         stage.setScene(scene);
         stage.initStyle(StageStyle.DECORATED);
         stage.setResizable(false);
         stage.setScene(scene);
         stage.setTitle("ALMAS IDE with Integrated Compiler");
         stage.show();
-        stage.setAlwaysOnTop(true);
+//        stage.setAlwaysOnTop(true);
         stage.setOnCloseRequest(status -> System.exit(0));
-        stage.getIcons().add(new Image("file://" + getClass()
-                .getResource("/images/almas.jfif").getFile()));
+        stage.getIcons().add(new Image("file://" + Objects.requireNonNull(getClass()
+                .getResource("/images/almas.jfif")).getFile()));
     }
 
 
