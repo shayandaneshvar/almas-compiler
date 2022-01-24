@@ -9,7 +9,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.stream.Collectors;
 
-public class CustomConsoleErrorListener extends ConsoleErrorListener {
+public class CustomLexerConsoleErrorListener extends ConsoleErrorListener {
     private final HashMap<String, List<InvalidToken>> invalidTokens = new HashMap<>();
 
     public List<List<InvalidToken>> getInvalidTokens() {
@@ -20,7 +20,9 @@ public class CustomConsoleErrorListener extends ConsoleErrorListener {
     }
 
     @Override
-    public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol, int line, int charPositionInLine, String msg, RecognitionException e) {
+    public void syntaxError(Recognizer<?, ?> recognizer, Object offendingSymbol,
+                            int line, int charPositionInLine, String msg,
+                            RecognitionException e) {
         System.err.println("line " + line + ":" + charPositionInLine + " " + msg);
         int startingIndex = msg.indexOf("'") + 1;
         int endingIndex = msg.lastIndexOf("'");

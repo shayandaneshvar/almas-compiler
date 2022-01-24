@@ -47,14 +47,15 @@ public class EditorPresenter implements Initializable {
     @FXML
     private Button importButton;
     private File sourceFile;
-
+    private File targetFile; // .class
+    private File javaFile;
 
     @FXML
     void compile(MouseEvent event) {
-        if(sourceFile != null){
-            try(FileWriter fileWriter = new FileWriter(sourceFile);
-                BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
-                PrintWriter printWriter = new PrintWriter(bufferedWriter)) {
+        if (sourceFile != null) {
+            try (FileWriter fileWriter = new FileWriter(sourceFile);
+                 BufferedWriter bufferedWriter = new BufferedWriter(fileWriter);
+                 PrintWriter printWriter = new PrintWriter(bufferedWriter)) {
                 printWriter.write(codeTextArea.getText());
             } catch (IOException e) {
                 e.printStackTrace();
@@ -95,20 +96,32 @@ public class EditorPresenter implements Initializable {
                     .orElse(""));
             return;
         }
-        terminalTextArea.setText(terminalTextArea.getText() + "Code has No Lexical Errors...");
-        // TODO: 12/19/2021  parser
+        terminalTextArea.setText(terminalTextArea.getText() + "Code has No Lexical Errors...\n");
+        Compiler.INSTANCE.runParser(codeTextArea.getText());
+        if (!Compiler.INSTANCE.getSyntaxErrors().isEmpty()) {
+            terminalTextArea.setText(terminalTextArea.getText() + "Code has Syntax Errors... \n");
+            terminalTextArea.setText(terminalTextArea.getText() +
+                    Compiler.INSTANCE
+                            .getSyntaxErrors()
+                            .stream()
+                            .map(z -> z + "\n")
+                            .reduce((x, y) -> x + y).orElse(" ! "));
+            return;
+        }
+        terminalTextArea.setText(terminalTextArea.getText() + "Code has No Syntax Errors...\n");
+
     }
 
 
     @FXML
     void importFromSource(MouseEvent event) {
-        if(sourceFile == null){
+        if (sourceFile == null) {
             Toolkit.getDefaultToolkit().beep();
             return;
         }
-        try(Scanner scanner = new Scanner(sourceFile)) {
+        try (Scanner scanner = new Scanner(sourceFile)) {
             StringBuilder str = new StringBuilder();
-            while (scanner.hasNextLine()){
+            while (scanner.hasNextLine()) {
                 str.append(scanner.nextLine()).append("\n");
             }
             codeTextArea.setText(str.toString());
@@ -130,13 +143,13 @@ public class EditorPresenter implements Initializable {
         FileChooser fileChooser = new FileChooser();
         fileChooser.setTitle("Open source File");
         fileChooser.setInitialFileName("test.almas");
-        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("ALMAS file","*.almas"));
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("ALMAS file", "*.almas"));
         File file = fileChooser.showOpenDialog(stage);
-        if(file == null) return;
-        if(!file.getName().endsWith(".almas")){
+        if (file == null) return;
+        if (!file.getName().endsWith(".almas")) {
             file = new File(file.getPath() + ".almas");
         }
-        if(!file.exists()){
+        if (!file.exists()) {
             try {
                 file.createNewFile();
             } catch (IOException e) {
@@ -149,7 +162,37 @@ public class EditorPresenter implements Initializable {
 
     @FXML
     void selectTarget(MouseEvent event) {
-        // open folder todo
+        Stage stage = new Stage();
+        stage.initOwner(Editor.getInstance().getStage());
+        stage.setAlwaysOnTop(true);
+        FileChooser fileChooser = new FileChooser();
+        fileChooser.setTitle("Open target File");
+        fileChooser.setInitialFileName("test.class");
+        fileChooser.setSelectedExtensionFilter(new FileChooser.ExtensionFilter("class file", "*.class"));
+        File file = fileChooser.showOpenDialog(stage);
+        if (file == null) return;
+        if (!file.getName().endsWith(".class")) {
+            file = new File(file.getPath() + ".class");
+        }
+        this.javaFile = new File(file.getPath()
+                .substring(0, file.getPath()
+                        .indexOf(".class")) + ".java");
+        if (!javaFile.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        if (!file.exists()) {
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        this.targetFile = file;
+        sourceTextField.setText(file.getName());
     }
 
 

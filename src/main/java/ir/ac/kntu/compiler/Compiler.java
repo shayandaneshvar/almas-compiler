@@ -8,12 +8,19 @@ import org.antlr.v4.runtime.tree.ParseTreeWalker;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.function.Function;
 
 public enum Compiler {
     INSTANCE;
     private ALMASLexer lexer = null;
     private List<List<InvalidToken>> invalidTokens = new ArrayList<>();
     private List<? extends Token> extractedTokens;
+    private Set<String> syntaxErrors;
+
+    public Set<String> getSyntaxErrors() {
+        return syntaxErrors;
+    }
 
     public List<List<InvalidToken>> getInvalidTokens() {
         return invalidTokens;
@@ -31,7 +38,7 @@ public enum Compiler {
 
     public void runLexer(String sourceCode) {
         lexer = new ALMASLexer(new org.antlr.v4.runtime.ANTLRInputStream(sourceCode));
-        CustomConsoleErrorListener listener = new CustomConsoleErrorListener();
+        CustomLexerConsoleErrorListener listener = new CustomLexerConsoleErrorListener();
         lexer.addErrorListener(listener);
         extractedTokens = lexer.getAllTokens();
         invalidTokens = listener.getInvalidTokens();
@@ -49,28 +56,33 @@ public enum Compiler {
             System.out.println("Symbolic name: " + lexer.getVocabulary().getSymbolicName(z.getType()));
             System.out.println("-----------");
         });
+
     }
 
 
-    public void runParser() {
-        if (lexer == null) {
-            throw new FatalException("Should run lexer first!");
-        }
-        if (!invalidTokens.isEmpty()) {
-            throw new FatalException("We have invalid Tokens"); // FIXME: Phase 3
-        }
+    public Function<String, String> runParser(String sourceCode) {
+        lexer = new ALMASLexer(new org.antlr.v4.runtime.ANTLRInputStream(sourceCode));
         CommonTokenStream tokens = new CommonTokenStream(lexer);
         ALMASParser parser = new ALMASParser(tokens);
-        ParseTree tree = parser.program(); // begin parsing at init rule
+        CustomParserConsoleErrorListener listener = new CustomParserConsoleErrorListener();
+        parser.addErrorListener(listener);
+        ParseTree tree = parser.program();// begin parsing at init rule
+        syntaxErrors = listener.getErrors();
+
         System.out.println(tree.toStringTree(parser));
         ParseTreeWalker walker = new ParseTreeWalker();
-        walker.walk(new ALMASBaseListener(), tree);
+        ALMASRuleListener semanticListener = new ALMASRuleListener("FILENAME");
+        walker.walk(semanticListener, tree);
+
+
+        System.out.println(parser.getNumberOfSyntaxErrors());
+        return filename -> semanticListener.getJavaCode().replace("FILENAME", filename);
     }
 
     public static void main(String[] args) {
         String src = "2 * 2 + 4/5 + 7//3 asd ♦ ♣ ♣ ▬ ♪ ♫ this ☺ ";
         ALMASLexer lexer = new ALMASLexer(new org.antlr.v4.runtime.ANTLRInputStream(src));
-        CustomConsoleErrorListener listener = new CustomConsoleErrorListener();
+        CustomLexerConsoleErrorListener listener = new CustomLexerConsoleErrorListener();
         lexer.addErrorListener(listener);
 
         List<? extends Token> extractedTokens = lexer.getAllTokens();

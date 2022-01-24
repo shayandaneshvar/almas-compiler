@@ -13,7 +13,7 @@ public class Example {
     final static String EOF = "\u001a";
 
     public static void main1(String[] args) {
-        String src = "2 * 2 + 4/5 + 7//3 fuck shit this ";
+        String src = "2 * 2 + 4/5 + 7//3  ";
         ALMASLexer lexer = new ALMASLexer(new ANTLRInputStream(src));
         ALMASParser parser = new ALMASParser(new CommonTokenStream(lexer));
 //        CommonTree tree = ((CommonTree)parser.).getTree();
