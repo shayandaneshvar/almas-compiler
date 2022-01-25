@@ -6,7 +6,6 @@ grammar ALMAS;
 
 
 program : (program_body)* EOF;
-func_inputs : LEFT_P (primitive_type IDENTIFIER more_func_inputs?)?  RIGHT_P ;
 program_body : statements | function ;
 
 
@@ -26,6 +25,7 @@ else_st : ELSE_SYMBOL CURLY_LEFT statements? CURLY_RIGHT;
 
 expressions:  expression ((BINARY_BOOLEAN_OP|EQUAL) expressions)?;
 expression:  relop_expression | UNARY_OP* IDENTIFIER | UNARY_OP* BOOLEAN | UNARY_OP* LEFT_P expression RIGHT_P;
+
 relop_expression:
 	decimal_expressions RELATIONAL_OPERATOR decimal_expressions 
 	| (decimal_expressions|STRING|BOOLEAN|IDENTIFIER) EQUAL (decimal_expressions|STRING|BOOLEAN| IDENTIFIER)
@@ -42,8 +42,9 @@ print: PRINT_OP LEFT_P (decimal_expressions|STRING|BOOLEAN|IDENTIFIER) RIGHT_P;
 input: INPUT_OP LEFT_P (STRING|IDENTIFIER) RIGHT_P;
 
 return_type : primitive_type | VOID_TYPE;
+func_inputs : LEFT_P (primitive_type IDENTIFIER more_func_inputs?)?  RIGHT_P ;
 function : FUNCTION_SYMBOL return_type IDENTIFIER func_inputs CURLY_LEFT statements? return_st? CURLY_RIGHT;
-		   
+
 function_call : IDENTIFIER LEFT_P func_args? RIGHT_P;
 
 more_func_inputs : COMMA primitive_type IDENTIFIER more_func_inputs? ;

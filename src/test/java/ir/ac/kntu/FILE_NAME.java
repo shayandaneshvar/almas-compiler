@@ -53,7 +53,6 @@ public class FILE_NAME {
         //CODES
         double x = 2;
         String z = "";
-
         scanner.close();
     }
 

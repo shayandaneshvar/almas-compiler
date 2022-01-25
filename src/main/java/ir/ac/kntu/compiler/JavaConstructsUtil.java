@@ -1,7 +1,5 @@
 package ir.ac.kntu.compiler;
 
-import java.util.List;
-
 public final class JavaConstructsUtil {
 
     private static final String DECIMAL = "double", STRING = "String", BOOLEAN = "boolean";
@@ -14,6 +12,9 @@ public final class JavaConstructsUtil {
     private static final String IF = "if (TERM) {\n";
     private static final String ELIF = "else if (TERM) {\n";
     private static final String ELSE = "else {\n";
+    private static final String FUNCTION = "\n" +
+            "    public static RETURN_TYPE FUNCTION_NAME(INPUTS) {\n";
+    private static final String FUNCTION_CALL = "FUNCTION_NAME(INPUTS);";
     private static final String BASE_CONSTRUCT = "import java.util.Scanner;\n" +
             "public class FILE_NAME {\n" +
             "  private static final Scanner scanner = new Scanner(System.in);\n" +
@@ -105,7 +106,7 @@ public final class JavaConstructsUtil {
     }
 
     public static String getBooleanCast(ALMASParser.Boolean_castContext ctx) {
-        return BOOLEAN_CAST.replace("INPUT", ctx.getText());
+        return BOOLEAN_CAST.replace("INPUT", translateExpression(ctx.getText()));
     }
 
     public static String getInput(ALMASParser.InputContext ctx) {
@@ -129,14 +130,17 @@ public final class JavaConstructsUtil {
     public static String getDecimalAssignment(ALMASParser.Decimal_assignmentContext ctx) {
         String result = ctx.ASSIGNMENT_OP() + " " + "decimalCast(";
         if (ctx.decimal_expressions() != null)
-            return result + ctx.decimal_expressions().getText();
+            return result + ctx.decimal_expressions().getText().replace("//", "/");
         return result;
     }
 
     public static String getBooleanAssignment(ALMASParser.Boolean_assignmentContext ctx) {
         String result = ctx.ASSIGNMENT_OP() + " " + "booleanCast(";
         if (ctx.BOOLEAN() != null)
-            return result + ctx.BOOLEAN().getText();
+            return result + translateExpression(ctx.BOOLEAN().getText());
+        else if (ctx.expressions() != null) {
+            return translateExpression(ctx.expressions().getText());
+        }
         return result;
     }
 
@@ -150,22 +154,14 @@ public final class JavaConstructsUtil {
     }
 
     public static String getLoop(ALMASParser.LoopContext ctx) {
-        List<ALMASParser.Decimal_expressionsContext> decimalExpressions = ctx.decimal_expressions();
-
         String start, end, inc;
+        String[] numbers = ctx.getText()
+                .substring(7, ctx.getText().length() - 3).split(":");
+        start = numbers[0].trim().isEmpty() ? "0" : numbers[0].trim();
+        end = numbers[1].trim();
+        inc = numbers[2].trim().isEmpty() ? "1" : numbers[2].trim();
 
-        if (decimalExpressions.size() == 1) {
-            start = "0";
-            end = decimalExpressions.get(0).getText();
-            inc = "1";
-        } else {
-            start = decimalExpressions.get(0).getText();
-            end = decimalExpressions.get(1).getText();
-            inc = decimalExpressions.get(2).getText();
-        }
-
-        return LOOP
-                .replace("ID", ctx.IDENTIFIER().getText())
+        return LOOP.replace("ID", ctx.IDENTIFIER().getText())
                 .replace("START", start)
                 .replace("END", end)
                 .replace("INC", inc);
@@ -181,5 +177,63 @@ public final class JavaConstructsUtil {
 
     public static String getElse(ALMASParser.Else_stContext ctx) {
         return ELSE;
+    }
+
+    public static String getFunction(ALMASParser.FunctionContext ctx) {
+        String result = FUNCTION.replace("FUNCTION_NAME", ctx.IDENTIFIER().getText());
+        if (ctx.return_type().VOID_TYPE() != null) {
+            result = result.replace("RETURN_TYPE", "void");
+        } else {
+            if (ctx.return_type().primitive_type().STRING_TYPE() != null) {
+                result = result.replace("RETURN_TYPE", "String");
+            } else if (ctx.return_type().primitive_type().BOOLEAN_TYPE() != null) {
+                result = result.replace("RETURN_TYPE", "boolean");
+            } else if (ctx.return_type().primitive_type().DECIMAL_TYPE() != null) {
+                result = result.replace("RETURN_TYPE", "double");
+            }
+        }
+        return result.replace("INPUTS", ctx.func_inputs()
+                .getText()
+                .substring(1, ctx.func_inputs().getText().length() - 1)
+                .replace("$", "String ")
+                .replace("#", "double ")
+                .replace("?", "boolean "));
+    }
+
+    public static String getFunctionReturnType(ALMASParser.FunctionContext ctx) {
+        // TODO: 1/25/2022 Semantic Checking of return type and return Value
+        if (ctx.return_st() == null) {
+            return "} \n";
+        }
+        String result = "return ";
+        if (ctx.return_st().STRING() != null) {
+            result += ctx.return_st().STRING().getText();
+        } else if (ctx.return_st().BOOLEAN() != null) {
+            result += ctx.return_st().BOOLEAN().getText().equals("yes") ? "true" : "false";
+        } else if (ctx.return_st().IDENTIFIER() != null) {
+            result += ctx.return_st().IDENTIFIER().getText();
+        } else if (ctx.return_st().expressions() != null) {
+            result += translateExpression(ctx.return_st().expressions().getText());
+        } else if (ctx.return_st().decimal_expressions() != null) {
+            result += ctx.return_st().decimal_expressions().getText().replace("//", "/");
+        }
+
+        return result + "; \n } \n";
+    }
+
+    public static String getFunctionCall(ALMASParser.Function_callContext ctx) {
+        String result = FUNCTION_CALL.replace("FUNCTION_NAME", ctx.IDENTIFIER().getText());
+        return result.replace("INPUTS", translateExpression(ctx.func_args().getText())
+                .replace("//", "/"));
+    }
+
+    public static String getLoopSt(ALMASParser.Loop_statementsContext ctx) {
+        if(ctx.BREAK_SYMBOL() != null){
+            return "break;";
+        }
+        if(ctx.CONTINUE_SYMBOL() != null){
+            return "continue;";
+        }
+        return "";
     }
 }
