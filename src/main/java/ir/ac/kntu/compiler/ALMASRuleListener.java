@@ -218,14 +218,23 @@ public class ALMASRuleListener extends ALMASBaseListener {
     }
 
 //    @Override
+//    public void enterBreak_continue(ALMASParser.Break_continueContext ctx) {
+//        super.enterBreak_continue(ctx);
+//    }
+
+    @Override
+    public void exitBreak_continue(ALMASParser.Break_continueContext ctx) {
+        emit(JavaConstructsUtil.getBreakContinueSt(ctx));
+    }
+//    @Override
 //    public void enterLoop_statements(ALMASParser.Loop_statementsContext ctx) {
 //        super.enterLoop_statements(ctx);
 //    }
 //
-    @Override
-    public void exitLoop_statements(ALMASParser.Loop_statementsContext ctx) {
-        emit(JavaConstructsUtil.getLoopSt(ctx));
-    }
+//    @Override
+//    public void exitLoop_statements(ALMASParser.Loop_statementsContext ctx) {
+//        emit(JavaConstructsUtil.getLoopSt(ctx));
+//    }
 
     @Override
     public void enterPrint(ALMASParser.PrintContext ctx) {

@@ -124,6 +124,9 @@ public final class JavaConstructsUtil {
         String result = ctx.ASSIGNMENT_OP() + " " + "stringCast(";
         if (ctx.STRING() != null)
             return result + ctx.STRING().getText();
+        if (ctx.IDENTIFIER() != null) {
+            return result + ctx.IDENTIFIER().getText();
+        }
         return result;
     }
 
@@ -131,6 +134,9 @@ public final class JavaConstructsUtil {
         String result = ctx.ASSIGNMENT_OP() + " " + "decimalCast(";
         if (ctx.decimal_expressions() != null)
             return result + ctx.decimal_expressions().getText().replace("//", "/");
+        if (ctx.IDENTIFIER() != null) {
+            return result + ctx.IDENTIFIER().getText();
+        }
         return result;
     }
 
@@ -140,6 +146,8 @@ public final class JavaConstructsUtil {
             return result + translateExpression(ctx.BOOLEAN().getText());
         else if (ctx.expressions() != null) {
             return translateExpression(ctx.expressions().getText());
+        } else if (ctx.IDENTIFIER() != null) {
+            return result + ctx.IDENTIFIER().getText();
         }
         return result;
     }
@@ -227,11 +235,11 @@ public final class JavaConstructsUtil {
                 .replace("//", "/"));
     }
 
-    public static String getLoopSt(ALMASParser.Loop_statementsContext ctx) {
-        if(ctx.BREAK_SYMBOL() != null){
+    public static String getBreakContinueSt(ALMASParser.Break_continueContext ctx) {
+        if (ctx.BREAK_SYMBOL() != null) {
             return "break;";
         }
-        if(ctx.CONTINUE_SYMBOL() != null){
+        if (ctx.CONTINUE_SYMBOL() != null) {
             return "continue;";
         }
         return "";

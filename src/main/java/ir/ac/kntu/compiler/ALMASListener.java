@@ -197,6 +197,16 @@ public interface ALMASListener extends ParseTreeListener {
 	 */
 	void exitLoop_statements(ALMASParser.Loop_statementsContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ALMASParser#break_continue}.
+	 * @param ctx the parse tree
+	 */
+	void enterBreak_continue(ALMASParser.Break_continueContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ALMASParser#break_continue}.
+	 * @param ctx the parse tree
+	 */
+	void exitBreak_continue(ALMASParser.Break_continueContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ALMASParser#print}.
 	 * @param ctx the parse tree
 	 */

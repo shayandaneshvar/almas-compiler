@@ -243,6 +243,18 @@ public class ALMASBaseListener implements ALMASListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBreak_continue(ALMASParser.Break_continueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBreak_continue(ALMASParser.Break_continueContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterPrint(ALMASParser.PrintContext ctx) { }
 	/**
 	 * {@inheritDoc}
