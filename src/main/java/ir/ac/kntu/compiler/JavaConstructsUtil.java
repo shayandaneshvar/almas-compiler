@@ -124,7 +124,10 @@ public final class JavaConstructsUtil {
     }
 
     public static String getDecimalAssignment(ALMASParser.Decimal_assignmentContext ctx) {
-        return ctx.ASSIGNMENT_OP() + " " + "decimalCast(";
+        String result = ctx.ASSIGNMENT_OP() + " " + "decimalCast(";
+        if (ctx.decimal_expressions() != null)
+            return result + ctx.decimal_expressions().getText();
+        return result;
     }
 
     public static String getBooleanAssignment(ALMASParser.Boolean_assignmentContext ctx) {
