@@ -28,7 +28,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     }
 
     public String getJavaCode() {
-        return javaCode;
+        return javaCode.replace(";)", ")");
     }
 
     public ALMASRuleListener(String filename) {
@@ -358,10 +358,11 @@ public class ALMASRuleListener extends ALMASBaseListener {
 //
 //    }
 
-    @Override
-    public void enterPrimitive_type(ALMASParser.Primitive_typeContext ctx) {
-        emit(JavaConstructsUtil.getPrimitiveType(ctx));
-    }
+//    @Override
+//    public void enterPrimitive_type(ALMASParser.Primitive_typeContext ctx) {
+//
+//        emit(JavaConstructsUtil.getPrimitiveType(ctx));
+//    }
 
 //    @Override
 //    public void exitPrimitive_type(ALMASParser.Primitive_typeContext ctx) {

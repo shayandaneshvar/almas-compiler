@@ -19,6 +19,7 @@ import java.util.List;
 import java.util.ResourceBundle;
 import java.util.Scanner;
 import java.util.concurrent.atomic.AtomicReference;
+import java.util.function.Function;
 
 public class EditorPresenter implements Initializable {
 
@@ -61,6 +62,9 @@ public class EditorPresenter implements Initializable {
                 e.printStackTrace();
             }
         }
+        if (javaFile == null) {
+            selectSource(event);
+        }
         terminalTextArea.setText("");
         Compiler.INSTANCE.runLexer(codeTextArea.getText());
         if (verboseCheckbox.isSelected()) {
@@ -97,7 +101,7 @@ public class EditorPresenter implements Initializable {
             return;
         }
         terminalTextArea.setText(terminalTextArea.getText() + "Code has No Lexical Errors...\n");
-        Compiler.INSTANCE.runParser(codeTextArea.getText());
+        Function<String, String> function = Compiler.INSTANCE.runParser(codeTextArea.getText());
         if (!Compiler.INSTANCE.getSyntaxErrors().isEmpty()) {
             terminalTextArea.setText(terminalTextArea.getText() + "Code has Syntax Errors... \n");
             terminalTextArea.setText(terminalTextArea.getText() +
@@ -109,7 +113,19 @@ public class EditorPresenter implements Initializable {
             return;
         }
         terminalTextArea.setText(terminalTextArea.getText() + "Code has No Syntax Errors...\n");
-
+        String javaCode = function.apply(javaFile.getName().substring(0, javaFile.getName().length() - 5));
+        try (FileWriter fw = new FileWriter(javaFile);
+             BufferedWriter bf = new BufferedWriter(fw);
+             PrintWriter printer = new PrintWriter(bf)) {
+            printer.write(javaCode);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Runtime.getRuntime().exec("javac " + javaFile.getPath());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
@@ -132,7 +148,24 @@ public class EditorPresenter implements Initializable {
 
     @FXML
     void run(MouseEvent event) {
-        // run code todo
+        compile(event);
+        String runnerScript = "start cmd.exe @cmd /k \"java FILENAME\"";
+        File f = new File(javaFile.getParent() + "/run.bat");
+        try (FileWriter fw = new FileWriter(f);
+             BufferedWriter bf = new BufferedWriter(fw);
+             PrintWriter printer = new PrintWriter(bf)) {
+            printer.write(runnerScript
+                    .replace("FILENAME",
+                            javaFile.getName()
+                                    .substring(0, javaFile.getName().length() - 5)));
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        try {
+            Runtime.getRuntime().exec(javaFile.getParentFile() + "/run.bat", null, javaFile.getParentFile());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @FXML
@@ -192,7 +225,7 @@ public class EditorPresenter implements Initializable {
             }
         }
         this.targetFile = file;
-        sourceTextField.setText(file.getName());
+        targetTextField.setText(file.getName());
     }
 
 

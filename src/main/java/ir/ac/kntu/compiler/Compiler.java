@@ -68,7 +68,9 @@ public enum Compiler {
         parser.addErrorListener(listener);
         ParseTree tree = parser.program();// begin parsing at init rule
         syntaxErrors = listener.getErrors();
-
+        if (!syntaxErrors.isEmpty()) {
+            return x -> null;
+        }
         System.out.println(tree.toStringTree(parser));
         ParseTreeWalker walker = new ParseTreeWalker();
         ALMASRuleListener semanticListener = new ALMASRuleListener("FILENAME");

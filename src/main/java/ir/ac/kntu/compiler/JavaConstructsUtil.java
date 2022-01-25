@@ -115,8 +115,9 @@ public final class JavaConstructsUtil {
     }
 
     public static String getPrint(ALMASParser.PrintContext ctx) { // FIXME: 1/25/2022
-        return PRINT.replace("INPUT", ctx.IDENTIFIER() != null ?
-                ctx.IDENTIFIER().getText() : ctx.STRING().getText());
+        return PRINT.replace("INPUT", translateExpression(
+                ctx.getText().substring(ctx.getText().indexOf("(") + 1,
+                        ctx.getText().lastIndexOf(")"))));
     }
 
 
