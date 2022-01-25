@@ -102,7 +102,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void enterIf_st(ALMASParser.If_stContext ctx) {
-        super.enterIf_st(ctx);
     }
 
     @Override
@@ -112,32 +111,32 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void enterBare_if(ALMASParser.Bare_ifContext ctx) {
-        super.enterBare_if(ctx);
+        codes += JavaConstructsUtil.getIfSt(ctx);
     }
 
     @Override
     public void exitBare_if(ALMASParser.Bare_ifContext ctx) {
-        super.exitBare_if(ctx);
+        codes += "}\n";
     }
 
     @Override
     public void enterElif(ALMASParser.ElifContext ctx) {
-        super.enterElif(ctx);
+        codes += JavaConstructsUtil.getElif(ctx);
     }
 
     @Override
     public void exitElif(ALMASParser.ElifContext ctx) {
-        super.exitElif(ctx);
+        codes += "}\n";
     }
 
     @Override
     public void enterElse_st(ALMASParser.Else_stContext ctx) {
-        super.enterElse_st(ctx);
+        codes += JavaConstructsUtil.getElse(ctx);
     }
 
     @Override
     public void exitElse_st(ALMASParser.Else_stContext ctx) {
-        super.exitElse_st(ctx);
+        codes += "}\n";
     }
 
     @Override

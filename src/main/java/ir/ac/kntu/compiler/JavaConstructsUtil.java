@@ -11,6 +11,9 @@ public final class JavaConstructsUtil {
     private static final String INPUT = "input(INPUT)";
     private static final String PRINT = "System.out.println(INPUT);\n";
     private static final String LOOP = "for (int ID = START; i < END; i += INC) {\n";
+    private static final String IF = "if (TERM) {\n";
+    private static final String ELIF = "else if (TERM) {\n";
+    private static final String ELSE = "else {\n";
     private static final String BASE_CONSTRUCT = "import java.util.Scanner;\n" +
             "public class FILE_NAME {\n" +
             "  private static final Scanner scanner = new Scanner(System.in);\n" +
@@ -137,6 +140,15 @@ public final class JavaConstructsUtil {
         return result;
     }
 
+    private static String translateExpression(String input) {
+        return input
+                .replace("is", "==")
+                .replace("&", "&&")
+                .replace("|", "||")
+                .replace("yes", "true")
+                .replace("no", "false");
+    }
+
     public static String getLoop(ALMASParser.LoopContext ctx) {
         List<ALMASParser.Decimal_expressionsContext> decimalExpressions = ctx.decimal_expressions();
 
@@ -157,5 +169,17 @@ public final class JavaConstructsUtil {
                 .replace("START", start)
                 .replace("END", end)
                 .replace("INC", inc);
+    }
+
+    public static String getIfSt(ALMASParser.Bare_ifContext ctx) {
+        return IF.replace("TERM", translateExpression(ctx.expressions().getText()));
+    }
+
+    public static String getElif(ALMASParser.ElifContext ctx) {
+        return ELIF.replace("TERM", translateExpression(ctx.expressions().getText()));
+    }
+
+    public static String getElse(ALMASParser.Else_stContext ctx) {
+        return ELSE;
     }
 }
