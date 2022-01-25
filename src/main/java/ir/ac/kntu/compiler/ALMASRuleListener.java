@@ -202,12 +202,12 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void enterLoop(ALMASParser.LoopContext ctx) {
-        super.enterLoop(ctx);
+        codes += JavaConstructsUtil.getLoop(ctx);
     }
 
     @Override
     public void exitLoop(ALMASParser.LoopContext ctx) {
-        super.exitLoop(ctx);
+        codes += "}\n";
     }
 
     @Override

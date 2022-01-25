@@ -1,5 +1,7 @@
 package ir.ac.kntu.compiler;
 
+import java.util.List;
+
 public final class JavaConstructsUtil {
 
     private static final String DECIMAL = "double", STRING = "String", BOOLEAN = "boolean";
@@ -8,6 +10,7 @@ public final class JavaConstructsUtil {
     private static final String BOOLEAN_CAST = "booleanCast(INPUT)";
     private static final String INPUT = "input(INPUT)";
     private static final String PRINT = "System.out.println(INPUT);\n";
+    private static final String LOOP = "for (int ID = START; i < END; i += INC) {\n";
     private static final String BASE_CONSTRUCT = "import java.util.Scanner;\n" +
             "public class FILE_NAME {\n" +
             "  private static final Scanner scanner = new Scanner(System.in);\n" +
@@ -129,5 +132,27 @@ public final class JavaConstructsUtil {
         if (ctx.BOOLEAN() != null)
             return result + ctx.BOOLEAN().getText();
         return result;
+    }
+
+    public static String getLoop(ALMASParser.LoopContext ctx) {
+        List<ALMASParser.Decimal_expressionsContext> decimalExpressions = ctx.decimal_expressions();
+
+        String start, end, inc;
+
+        if (decimalExpressions.size() == 1) {
+            start = "0";
+            end = decimalExpressions.get(0).getText();
+            inc = "1";
+        } else {
+            start = decimalExpressions.get(0).getText();
+            end = decimalExpressions.get(1).getText();
+            inc = decimalExpressions.get(2).getText();
+        }
+
+        return LOOP
+                .replace("ID", ctx.IDENTIFIER().getText())
+                .replace("START", start)
+                .replace("END", end)
+                .replace("INC", inc);
     }
 }
