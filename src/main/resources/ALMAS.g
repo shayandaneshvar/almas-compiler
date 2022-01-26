@@ -7,7 +7,7 @@ grammar ALMAS;
 
 program : (program_body)* EOF;
 func_inputs : LEFT_P (primitive_type IDENTIFIER more_func_inputs?)?  RIGHT_P ;
-program_body : statements | function ;
+program_body : statements | function | java_code ;
 
 
 assignment : 
@@ -35,7 +35,7 @@ relop_expression:
 decimal_expressions: decimal_expression (BINARY_DECIMAL_OP decimal_expressions)?;
 decimal_expression: (IDENTIFIER|DECIMAL) (BINARY_DECIMAL_OP (IDENTIFIER|DECIMAL))? | LEFT_P (IDENTIFIER|DECIMAL) (BINARY_DECIMAL_OP (IDENTIFIER|DECIMAL))? RIGHT_P ;
 
-statements: (assignment | if_st | loop | function_call | print | input| break_continue)+ ;
+statements: (assignment | if_st | loop | function_call | print | java_code| input| break_continue)+ ;
 loop : FOR_SYMBOL LEFT_P IDENTIFIER COLON decimal_expressions? COLON decimal_expressions COLON decimal_expressions? RIGHT_P CURLY_LEFT loop_statements? CURLY_RIGHT ;
 loop_statements: (statements)+ ;
 break_continue: CONTINUE_SYMBOL | BREAK_SYMBOL;
@@ -62,7 +62,8 @@ string_cast:  STRING_CAST_SYMBOL LEFT_P IDENTIFIER RIGHT_P;
 
 primitive_type : STRING_TYPE | DECIMAL_TYPE | BOOLEAN_TYPE;
 
-
+java_code: JAVA_STARTER LEFT_P java_code_block? RIGHT_P;
+java_code_block: STRING;
 /*		 LEXER			 */
 
 
@@ -71,7 +72,7 @@ primitive_type : STRING_TYPE | DECIMAL_TYPE | BOOLEAN_TYPE;
 WS : ( ' ' | '\t' | '\r' | '\n') -> skip;
 
 
-
+JAVA_STARTER: '@java';
 DECIMAL_TYPE: '#' ;
 STRING_TYPE: '$';
 BOOLEAN_TYPE: '?';

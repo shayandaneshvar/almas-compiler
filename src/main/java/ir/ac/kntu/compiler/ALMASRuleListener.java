@@ -222,6 +222,16 @@ public class ALMASRuleListener extends ALMASBaseListener {
     }
 
     @Override
+    public void enterJava_code_block(ALMASParser.Java_code_blockContext ctx) {
+        super.enterJava_code_block(ctx);
+    }
+
+    @Override
+    public void exitJava_code_block(ALMASParser.Java_code_blockContext ctx) {
+        emit(ctx.getText().substring(1,ctx.getText().length() - 1));
+    }
+
+    @Override
     public void exitLoop(ALMASParser.LoopContext ctx) {
         emit("}\n");
     }

@@ -418,6 +418,30 @@ public class ALMASBaseListener implements ALMASListener {
 	 * <p>The default implementation does nothing.</p>
 	 */
 	@Override public void exitPrimitive_type(ALMASParser.Primitive_typeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJava_code(ALMASParser.Java_codeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJava_code(ALMASParser.Java_codeContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void enterJava_code_block(ALMASParser.Java_code_blockContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitJava_code_block(ALMASParser.Java_code_blockContext ctx) { }
 
 	/**
 	 * {@inheritDoc}

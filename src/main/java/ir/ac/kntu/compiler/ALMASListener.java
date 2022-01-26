@@ -346,4 +346,24 @@ public interface ALMASListener extends ParseTreeListener {
 	 * @param ctx the parse tree
 	 */
 	void exitPrimitive_type(ALMASParser.Primitive_typeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ALMASParser#java_code}.
+	 * @param ctx the parse tree
+	 */
+	void enterJava_code(ALMASParser.Java_codeContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ALMASParser#java_code}.
+	 * @param ctx the parse tree
+	 */
+	void exitJava_code(ALMASParser.Java_codeContext ctx);
+	/**
+	 * Enter a parse tree produced by {@link ALMASParser#java_code_block}.
+	 * @param ctx the parse tree
+	 */
+	void enterJava_code_block(ALMASParser.Java_code_blockContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ALMASParser#java_code_block}.
+	 * @param ctx the parse tree
+	 */
+	void exitJava_code_block(ALMASParser.Java_code_blockContext ctx);
 }
