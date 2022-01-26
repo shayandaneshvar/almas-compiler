@@ -1,0 +1,48 @@
+
+@print("Welcome to ALMAS!")
+loop(i:1:10:0){
+@print("In Loop with index: ")
+@print(i)
+# x = @input("Enter Order ID: (0 is for help)")
+	if(x is 0){
+	@print("Menu Options: ")
+	@print("0 -> Help")
+	@print("1 -> simple adder")
+	@print("2 -> meh...")
+	@print("3 -> fibo!")
+	@print("10 -> exit")
+	go
+	} elif(x is 10){ break }
+	elif(x is 2){@print("....meh")}
+	elif(x is 1){ 
+		# z = @input("z?")
+		# y = @input("y?")
+		# sum = add(z, y)
+		@print(sum)
+	 }elif(x is 3){
+		# n = @input("Which n for fibo?")
+		# f = fibo(n)
+		@print(f)
+	}
+	else{
+	@print("invalid choice")
+	}
+}
+$ myString = "defined in ALMAS"
+@java("int xx = 2; System.out.println(myString);")
+
+fn # add(# a , # b){
+	# sum = a + b
+	ret sum
+}
+
+fn # fibo(#n){
+# a = 0
+# b = 1
+if(n <= 1.001){
+	@java("return 1;")
+}
+@java("return fibo(n - 1) + fibo(n - 2);")
+}
+
+@print("Have a nice day!")

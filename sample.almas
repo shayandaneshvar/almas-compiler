@@ -1,0 +1,23 @@
+@print("hello world")
+
+fn # add(# x, # y){ret x + y}
+
+# x = @input("enter x:")
+# y = @input("enter y:")
+# z = add(x,y)
+
+@print("sum of x and y equals: ")
+@print(z)
+@print("-------------")
+# o = @input("enter third")
+#sum = add(x,y,o)
+@print("sum of x and y and third equals:")
+@print(sum)
+
+
+fn $ add(# x, #y,# z){
+	# sumXY = add(x,y)
+	# result = add(sumXY,z)
+	$ res = @$(result)
+	ret res
+}
