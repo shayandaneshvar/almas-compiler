@@ -149,7 +149,7 @@ public class ALMASParser extends Parser {
 			setState(69);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << FUNCTION_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
+			while ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << FUNCTION_SYMBOL) | (1L << CONTINUE_SYMBOL) | (1L << BREAK_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
 				{
 				{
 				setState(66);
@@ -280,6 +280,8 @@ public class ALMASParser extends Parser {
 			case INPUT_OP:
 			case IF_SYMBOL:
 			case FOR_SYMBOL:
+			case CONTINUE_SYMBOL:
+			case BREAK_SYMBOL:
 			case IDENTIFIER:
 				enterOuterAlt(_localctx, 1);
 				{
@@ -761,7 +763,7 @@ public class ALMASParser extends Parser {
 			setState(137);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << CONTINUE_SYMBOL) | (1L << BREAK_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
 				{
 				setState(136);
 				statements();
@@ -832,7 +834,7 @@ public class ALMASParser extends Parser {
 			setState(147);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << CONTINUE_SYMBOL) | (1L << BREAK_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
 				{
 				setState(146);
 				statements();
@@ -899,7 +901,7 @@ public class ALMASParser extends Parser {
 			setState(156);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << CONTINUE_SYMBOL) | (1L << BREAK_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
 				{
 				setState(155);
 				statements();
@@ -1491,6 +1493,12 @@ public class ALMASParser extends Parser {
 		public InputContext input(int i) {
 			return getRuleContext(InputContext.class,i);
 		}
+		public List<Break_continueContext> break_continue() {
+			return getRuleContexts(Break_continueContext.class);
+		}
+		public Break_continueContext break_continue(int i) {
+			return getRuleContext(Break_continueContext.class,i);
+		}
 		public StatementsContext(ParserRuleContext parent, int invokingState) {
 			super(parent, invokingState);
 		}
@@ -1512,14 +1520,14 @@ public class ALMASParser extends Parser {
 			int _alt;
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(246); 
+			setState(247); 
 			_errHandler.sync(this);
 			_alt = 1;
 			do {
 				switch (_alt) {
 				case 1:
 					{
-					setState(246);
+					setState(247);
 					_errHandler.sync(this);
 					switch (_input.LA(1)) {
 					case DECIMAL_TYPE:
@@ -1560,6 +1568,13 @@ public class ALMASParser extends Parser {
 						input();
 						}
 						break;
+					case CONTINUE_SYMBOL:
+					case BREAK_SYMBOL:
+						{
+						setState(246);
+						break_continue();
+						}
+						break;
 					default:
 						throw new NoViableAltException(this);
 					}
@@ -1568,7 +1583,7 @@ public class ALMASParser extends Parser {
 				default:
 					throw new NoViableAltException(this);
 				}
-				setState(248); 
+				setState(249); 
 				_errHandler.sync(this);
 				_alt = getInterpreter().adaptivePredict(_input,28,_ctx);
 			} while ( _alt!=2 && _alt!= ATN.INVALID_ALT_NUMBER );
@@ -1626,55 +1641,55 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(250);
-			match(FOR_SYMBOL);
 			setState(251);
-			match(LEFT_P);
+			match(FOR_SYMBOL);
 			setState(252);
-			match(IDENTIFIER);
+			match(LEFT_P);
 			setState(253);
+			match(IDENTIFIER);
+			setState(254);
 			match(COLON);
-			setState(255);
+			setState(256);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LEFT_P) | (1L << DECIMAL) | (1L << IDENTIFIER))) != 0)) {
 				{
-				setState(254);
+				setState(255);
 				decimal_expressions();
 				}
 			}
 
-			setState(257);
-			match(COLON);
 			setState(258);
-			decimal_expressions();
-			setState(259);
 			match(COLON);
-			setState(261);
+			setState(259);
+			decimal_expressions();
+			setState(260);
+			match(COLON);
+			setState(262);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LEFT_P) | (1L << DECIMAL) | (1L << IDENTIFIER))) != 0)) {
 				{
-				setState(260);
+				setState(261);
 				decimal_expressions();
 				}
 			}
 
-			setState(263);
-			match(RIGHT_P);
 			setState(264);
+			match(RIGHT_P);
+			setState(265);
 			match(CURLY_LEFT);
-			setState(266);
+			setState(267);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << CONTINUE_SYMBOL) | (1L << BREAK_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
 				{
-				setState(265);
+				setState(266);
 				loop_statements();
 				}
 			}
 
-			setState(268);
+			setState(269);
 			match(CURLY_RIGHT);
 			}
 		}
@@ -1723,39 +1738,29 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(272); 
+			setState(273); 
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			do {
 				{
-				setState(272);
+				setState(273);
 				_errHandler.sync(this);
-				switch (_input.LA(1)) {
-				case DECIMAL_TYPE:
-				case STRING_TYPE:
-				case BOOLEAN_TYPE:
-				case PRINT_OP:
-				case INPUT_OP:
-				case IF_SYMBOL:
-				case FOR_SYMBOL:
-				case IDENTIFIER:
+				switch ( getInterpreter().adaptivePredict(_input,32,_ctx) ) {
+				case 1:
 					{
-					setState(270);
+					setState(271);
 					statements();
 					}
 					break;
-				case CONTINUE_SYMBOL:
-				case BREAK_SYMBOL:
+				case 2:
 					{
-					setState(271);
+					setState(272);
 					break_continue();
 					}
 					break;
-				default:
-					throw new NoViableAltException(this);
 				}
 				}
-				setState(274); 
+				setState(275); 
 				_errHandler.sync(this);
 				_la = _input.LA(1);
 			} while ( (((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << CONTINUE_SYMBOL) | (1L << BREAK_SYMBOL) | (1L << IDENTIFIER))) != 0) );
@@ -1796,7 +1801,7 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(276);
+			setState(277);
 			_la = _input.LA(1);
 			if ( !(_la==CONTINUE_SYMBOL || _la==BREAK_SYMBOL) ) {
 			_errHandler.recoverInline(this);
@@ -1849,39 +1854,39 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(278);
-			match(PRINT_OP);
 			setState(279);
+			match(PRINT_OP);
+			setState(280);
 			match(LEFT_P);
-			setState(284);
+			setState(285);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,34,_ctx) ) {
 			case 1:
 				{
-				setState(280);
+				setState(281);
 				decimal_expressions();
 				}
 				break;
 			case 2:
 				{
-				setState(281);
+				setState(282);
 				match(STRING);
 				}
 				break;
 			case 3:
 				{
-				setState(282);
+				setState(283);
 				match(BOOLEAN);
 				}
 				break;
 			case 4:
 				{
-				setState(283);
+				setState(284);
 				match(IDENTIFIER);
 				}
 				break;
 			}
-			setState(286);
+			setState(287);
 			match(RIGHT_P);
 			}
 		}
@@ -1923,11 +1928,11 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(288);
-			match(INPUT_OP);
 			setState(289);
-			match(LEFT_P);
+			match(INPUT_OP);
 			setState(290);
+			match(LEFT_P);
+			setState(291);
 			_la = _input.LA(1);
 			if ( !(_la==IDENTIFIER || _la==STRING) ) {
 			_errHandler.recoverInline(this);
@@ -1937,7 +1942,7 @@ public class ALMASParser extends Parser {
 				_errHandler.reportMatch(this);
 				consume();
 			}
-			setState(291);
+			setState(292);
 			match(RIGHT_P);
 			}
 		}
@@ -1975,7 +1980,7 @@ public class ALMASParser extends Parser {
 		Return_typeContext _localctx = new Return_typeContext(_ctx, getState());
 		enterRule(_localctx, 44, RULE_return_type);
 		try {
-			setState(295);
+			setState(296);
 			_errHandler.sync(this);
 			switch (_input.LA(1)) {
 			case DECIMAL_TYPE:
@@ -1983,14 +1988,14 @@ public class ALMASParser extends Parser {
 			case BOOLEAN_TYPE:
 				enterOuterAlt(_localctx, 1);
 				{
-				setState(293);
+				setState(294);
 				primitive_type();
 				}
 				break;
 			case VOID_TYPE:
 				enterOuterAlt(_localctx, 2);
 				{
-				setState(294);
+				setState(295);
 				match(VOID_TYPE);
 				}
 				break;
@@ -2047,37 +2052,37 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(297);
-			match(FUNCTION_SYMBOL);
 			setState(298);
-			return_type();
+			match(FUNCTION_SYMBOL);
 			setState(299);
-			match(IDENTIFIER);
+			return_type();
 			setState(300);
-			func_inputs();
+			match(IDENTIFIER);
 			setState(301);
+			func_inputs();
+			setState(302);
 			match(CURLY_LEFT);
-			setState(303);
+			setState(304);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
-			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
+			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE) | (1L << PRINT_OP) | (1L << INPUT_OP) | (1L << IF_SYMBOL) | (1L << FOR_SYMBOL) | (1L << CONTINUE_SYMBOL) | (1L << BREAK_SYMBOL) | (1L << IDENTIFIER))) != 0)) {
 				{
-				setState(302);
+				setState(303);
 				statements();
 				}
 			}
 
-			setState(306);
+			setState(307);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==RETURN_SYMBOL) {
 				{
-				setState(305);
+				setState(306);
 				return_st();
 				}
 			}
 
-			setState(308);
+			setState(309);
 			match(CURLY_RIGHT);
 			}
 		}
@@ -2120,21 +2125,21 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(310);
-			match(IDENTIFIER);
 			setState(311);
+			match(IDENTIFIER);
+			setState(312);
 			match(LEFT_P);
-			setState(313);
+			setState(314);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if ((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << LEFT_P) | (1L << BOOLEAN) | (1L << DECIMAL) | (1L << UNARY_OP) | (1L << IDENTIFIER) | (1L << STRING))) != 0)) {
 				{
-				setState(312);
+				setState(313);
 				func_args();
 				}
 			}
 
-			setState(315);
+			setState(316);
 			match(RIGHT_P);
 			}
 		}
@@ -2179,18 +2184,18 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(317);
-			match(COMMA);
 			setState(318);
-			primitive_type();
+			match(COMMA);
 			setState(319);
+			primitive_type();
+			setState(320);
 			match(IDENTIFIER);
-			setState(321);
+			setState(322);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(320);
+				setState(321);
 				more_func_inputs();
 				}
 			}
@@ -2239,38 +2244,38 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(323);
+			setState(324);
 			match(RETURN_SYMBOL);
-			setState(329);
+			setState(330);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,40,_ctx) ) {
 			case 1:
 				{
-				setState(324);
+				setState(325);
 				match(IDENTIFIER);
 				}
 				break;
 			case 2:
 				{
-				setState(325);
+				setState(326);
 				decimal_expressions();
 				}
 				break;
 			case 3:
 				{
-				setState(326);
+				setState(327);
 				match(STRING);
 				}
 				break;
 			case 4:
 				{
-				setState(327);
+				setState(328);
 				match(BOOLEAN);
 				}
 				break;
 			case 5:
 				{
-				setState(328);
+				setState(329);
 				expressions();
 				}
 				break;
@@ -2322,46 +2327,46 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(336);
+			setState(337);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,41,_ctx) ) {
 			case 1:
 				{
-				setState(331);
+				setState(332);
 				match(IDENTIFIER);
 				}
 				break;
 			case 2:
 				{
-				setState(332);
+				setState(333);
 				decimal_expressions();
 				}
 				break;
 			case 3:
 				{
-				setState(333);
+				setState(334);
 				match(STRING);
 				}
 				break;
 			case 4:
 				{
-				setState(334);
+				setState(335);
 				match(BOOLEAN);
 				}
 				break;
 			case 5:
 				{
-				setState(335);
+				setState(336);
 				expressions();
 				}
 				break;
 			}
-			setState(339);
+			setState(340);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(338);
+				setState(339);
 				more_func_args();
 				}
 			}
@@ -2414,48 +2419,48 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(341);
+			setState(342);
 			match(COMMA);
-			setState(347);
+			setState(348);
 			_errHandler.sync(this);
 			switch ( getInterpreter().adaptivePredict(_input,43,_ctx) ) {
 			case 1:
 				{
-				setState(342);
+				setState(343);
 				match(IDENTIFIER);
 				}
 				break;
 			case 2:
 				{
-				setState(343);
+				setState(344);
 				decimal_expressions();
 				}
 				break;
 			case 3:
 				{
-				setState(344);
+				setState(345);
 				match(STRING);
 				}
 				break;
 			case 4:
 				{
-				setState(345);
+				setState(346);
 				match(BOOLEAN);
 				}
 				break;
 			case 5:
 				{
-				setState(346);
+				setState(347);
 				expressions();
 				}
 				break;
 			}
-			setState(350);
+			setState(351);
 			_errHandler.sync(this);
 			_la = _input.LA(1);
 			if (_la==COMMA) {
 				{
-				setState(349);
+				setState(350);
 				more_func_args();
 				}
 			}
@@ -2498,13 +2503,13 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(352);
-			match(BOOLEAN_CAST_SYMBOL);
 			setState(353);
-			match(LEFT_P);
+			match(BOOLEAN_CAST_SYMBOL);
 			setState(354);
-			match(IDENTIFIER);
+			match(LEFT_P);
 			setState(355);
+			match(IDENTIFIER);
+			setState(356);
 			match(RIGHT_P);
 			}
 		}
@@ -2544,13 +2549,13 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(357);
-			match(DECIMAL_CAST_SYMBOL);
 			setState(358);
-			match(LEFT_P);
+			match(DECIMAL_CAST_SYMBOL);
 			setState(359);
-			match(IDENTIFIER);
+			match(LEFT_P);
 			setState(360);
+			match(IDENTIFIER);
+			setState(361);
 			match(RIGHT_P);
 			}
 		}
@@ -2590,13 +2595,13 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(362);
-			match(STRING_CAST_SYMBOL);
 			setState(363);
-			match(LEFT_P);
+			match(STRING_CAST_SYMBOL);
 			setState(364);
-			match(IDENTIFIER);
+			match(LEFT_P);
 			setState(365);
+			match(IDENTIFIER);
+			setState(366);
 			match(RIGHT_P);
 			}
 		}
@@ -2636,7 +2641,7 @@ public class ALMASParser extends Parser {
 		try {
 			enterOuterAlt(_localctx, 1);
 			{
-			setState(367);
+			setState(368);
 			_la = _input.LA(1);
 			if ( !((((_la) & ~0x3f) == 0 && ((1L << _la) & ((1L << DECIMAL_TYPE) | (1L << STRING_TYPE) | (1L << BOOLEAN_TYPE))) != 0)) ) {
 			_errHandler.recoverInline(this);
@@ -2660,7 +2665,7 @@ public class ALMASParser extends Parser {
 	}
 
 	public static final String _serializedATN =
-		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3$\u0174\4\2\t\2\4"+
+		"\3\u608b\ua72a\u8133\ub9ed\u417c\u3be7\u7786\u5964\3$\u0175\4\2\t\2\4"+
 		"\3\t\3\4\4\t\4\4\5\t\5\4\6\t\6\4\7\t\7\4\b\t\b\4\t\t\t\4\n\t\n\4\13\t"+
 		"\13\4\f\t\f\4\r\t\r\4\16\t\16\4\17\t\17\4\20\t\20\4\21\t\21\4\22\t\22"+
 		"\4\23\t\23\4\24\t\24\4\25\t\25\4\26\t\26\4\27\t\27\4\30\t\30\4\31\t\31"+
@@ -2678,26 +2683,26 @@ public class ALMASParser extends Parser {
 		"\n\17\3\17\3\17\3\17\3\17\3\17\5\17\u00d2\n\17\3\17\7\17\u00d5\n\17\f"+
 		"\17\16\17\u00d8\13\17\3\17\3\17\3\17\3\17\5\17\u00de\n\17\3\20\3\20\3"+
 		"\20\5\20\u00e3\n\20\3\21\3\21\3\21\5\21\u00e8\n\21\3\21\3\21\3\21\3\21"+
-		"\5\21\u00ee\n\21\3\21\5\21\u00f1\n\21\3\22\3\22\3\22\3\22\3\22\3\22\6"+
-		"\22\u00f9\n\22\r\22\16\22\u00fa\3\23\3\23\3\23\3\23\3\23\5\23\u0102\n"+
-		"\23\3\23\3\23\3\23\3\23\5\23\u0108\n\23\3\23\3\23\3\23\5\23\u010d\n\23"+
-		"\3\23\3\23\3\24\3\24\6\24\u0113\n\24\r\24\16\24\u0114\3\25\3\25\3\26\3"+
-		"\26\3\26\3\26\3\26\3\26\5\26\u011f\n\26\3\26\3\26\3\27\3\27\3\27\3\27"+
-		"\3\27\3\30\3\30\5\30\u012a\n\30\3\31\3\31\3\31\3\31\3\31\3\31\5\31\u0132"+
-		"\n\31\3\31\5\31\u0135\n\31\3\31\3\31\3\32\3\32\3\32\5\32\u013c\n\32\3"+
-		"\32\3\32\3\33\3\33\3\33\3\33\5\33\u0144\n\33\3\34\3\34\3\34\3\34\3\34"+
-		"\3\34\5\34\u014c\n\34\3\35\3\35\3\35\3\35\3\35\5\35\u0153\n\35\3\35\5"+
-		"\35\u0156\n\35\3\36\3\36\3\36\3\36\3\36\3\36\5\36\u015e\n\36\3\36\5\36"+
-		"\u0161\n\36\3\37\3\37\3\37\3\37\3\37\3 \3 \3 \3 \3 \3!\3!\3!\3!\3!\3\""+
+		"\5\21\u00ee\n\21\3\21\5\21\u00f1\n\21\3\22\3\22\3\22\3\22\3\22\3\22\3"+
+		"\22\6\22\u00fa\n\22\r\22\16\22\u00fb\3\23\3\23\3\23\3\23\3\23\5\23\u0103"+
+		"\n\23\3\23\3\23\3\23\3\23\5\23\u0109\n\23\3\23\3\23\3\23\5\23\u010e\n"+
+		"\23\3\23\3\23\3\24\3\24\6\24\u0114\n\24\r\24\16\24\u0115\3\25\3\25\3\26"+
+		"\3\26\3\26\3\26\3\26\3\26\5\26\u0120\n\26\3\26\3\26\3\27\3\27\3\27\3\27"+
+		"\3\27\3\30\3\30\5\30\u012b\n\30\3\31\3\31\3\31\3\31\3\31\3\31\5\31\u0133"+
+		"\n\31\3\31\5\31\u0136\n\31\3\31\3\31\3\32\3\32\3\32\5\32\u013d\n\32\3"+
+		"\32\3\32\3\33\3\33\3\33\3\33\5\33\u0145\n\33\3\34\3\34\3\34\3\34\3\34"+
+		"\3\34\5\34\u014d\n\34\3\35\3\35\3\35\3\35\3\35\5\35\u0154\n\35\3\35\5"+
+		"\35\u0157\n\35\3\36\3\36\3\36\3\36\3\36\3\36\5\36\u015f\n\36\3\36\5\36"+
+		"\u0162\n\36\3\37\3\37\3\37\3\37\3\37\3 \3 \3 \3 \3 \3!\3!\3!\3!\3!\3\""+
 		"\3\"\3\"\2\2#\2\4\6\b\n\f\16\20\22\24\26\30\32\34\36 \"$&(*,.\60\62\64"+
-		"\668:<>@B\2\7\4\2\n\n!!\4\2\34\34##\3\2\32\33\3\2#$\3\2\4\6\2\u01a0\2"+
+		"\668:<>@B\2\7\4\2\n\n!!\4\2\34\34##\3\2\32\33\3\2#$\3\2\4\6\2\u01a2\2"+
 		"G\3\2\2\2\4L\3\2\2\2\6X\3\2\2\2\bc\3\2\2\2\ne\3\2\2\2\fm\3\2\2\2\16u\3"+
 		"\2\2\2\20~\3\2\2\2\22\u0085\3\2\2\2\24\u008f\3\2\2\2\26\u009b\3\2\2\2"+
 		"\30\u00a2\3\2\2\2\32\u00c0\3\2\2\2\34\u00dd\3\2\2\2\36\u00df\3\2\2\2 "+
-		"\u00f0\3\2\2\2\"\u00f8\3\2\2\2$\u00fc\3\2\2\2&\u0112\3\2\2\2(\u0116\3"+
-		"\2\2\2*\u0118\3\2\2\2,\u0122\3\2\2\2.\u0129\3\2\2\2\60\u012b\3\2\2\2\62"+
-		"\u0138\3\2\2\2\64\u013f\3\2\2\2\66\u0145\3\2\2\28\u0152\3\2\2\2:\u0157"+
-		"\3\2\2\2<\u0162\3\2\2\2>\u0167\3\2\2\2@\u016c\3\2\2\2B\u0171\3\2\2\2D"+
+		"\u00f0\3\2\2\2\"\u00f9\3\2\2\2$\u00fd\3\2\2\2&\u0113\3\2\2\2(\u0117\3"+
+		"\2\2\2*\u0119\3\2\2\2,\u0123\3\2\2\2.\u012a\3\2\2\2\60\u012c\3\2\2\2\62"+
+		"\u0139\3\2\2\2\64\u0140\3\2\2\2\66\u0146\3\2\2\28\u0153\3\2\2\2:\u0158"+
+		"\3\2\2\2<\u0163\3\2\2\2>\u0168\3\2\2\2@\u016d\3\2\2\2B\u0172\3\2\2\2D"+
 		"F\5\6\4\2ED\3\2\2\2FI\3\2\2\2GE\3\2\2\2GH\3\2\2\2HJ\3\2\2\2IG\3\2\2\2"+
 		"JK\7\2\2\3K\3\3\2\2\2LR\7\17\2\2MN\5B\"\2NP\7#\2\2OQ\5\64\33\2PO\3\2\2"+
 		"\2PQ\3\2\2\2QS\3\2\2\2RM\3\2\2\2RS\3\2\2\2ST\3\2\2\2TU\7\20\2\2U\5\3\2"+
@@ -2749,55 +2754,56 @@ public class ALMASParser extends Parser {
 		"\3\2\2\2\u00e8\u00f1\3\2\2\2\u00e9\u00ea\7\17\2\2\u00ea\u00ed\t\3\2\2"+
 		"\u00eb\u00ec\7\"\2\2\u00ec\u00ee\t\3\2\2\u00ed\u00eb\3\2\2\2\u00ed\u00ee"+
 		"\3\2\2\2\u00ee\u00ef\3\2\2\2\u00ef\u00f1\7\20\2\2\u00f0\u00e4\3\2\2\2"+
-		"\u00f0\u00e9\3\2\2\2\u00f1!\3\2\2\2\u00f2\u00f9\5\b\5\2\u00f3\u00f9\5"+
-		"\20\t\2\u00f4\u00f9\5$\23\2\u00f5\u00f9\5\62\32\2\u00f6\u00f9\5*\26\2"+
-		"\u00f7\u00f9\5,\27\2\u00f8\u00f2\3\2\2\2\u00f8\u00f3\3\2\2\2\u00f8\u00f4"+
-		"\3\2\2\2\u00f8\u00f5\3\2\2\2\u00f8\u00f6\3\2\2\2\u00f8\u00f7\3\2\2\2\u00f9"+
-		"\u00fa\3\2\2\2\u00fa\u00f8\3\2\2\2\u00fa\u00fb\3\2\2\2\u00fb#\3\2\2\2"+
-		"\u00fc\u00fd\7\27\2\2\u00fd\u00fe\7\17\2\2\u00fe\u00ff\7#\2\2\u00ff\u0101"+
-		"\7\f\2\2\u0100\u0102\5\36\20\2\u0101\u0100\3\2\2\2\u0101\u0102\3\2\2\2"+
-		"\u0102\u0103\3\2\2\2\u0103\u0104\7\f\2\2\u0104\u0105\5\36\20\2\u0105\u0107"+
-		"\7\f\2\2\u0106\u0108\5\36\20\2\u0107\u0106\3\2\2\2\u0107\u0108\3\2\2\2"+
-		"\u0108\u0109\3\2\2\2\u0109\u010a\7\20\2\2\u010a\u010c\7\16\2\2\u010b\u010d"+
-		"\5&\24\2\u010c\u010b\3\2\2\2\u010c\u010d\3\2\2\2\u010d\u010e\3\2\2\2\u010e"+
-		"\u010f\7\r\2\2\u010f%\3\2\2\2\u0110\u0113\5\"\22\2\u0111\u0113\5(\25\2"+
-		"\u0112\u0110\3\2\2\2\u0112\u0111\3\2\2\2\u0113\u0114\3\2\2\2\u0114\u0112"+
-		"\3\2\2\2\u0114\u0115\3\2\2\2\u0115\'\3\2\2\2\u0116\u0117\t\4\2\2\u0117"+
-		")\3\2\2\2\u0118\u0119\7\21\2\2\u0119\u011e\7\17\2\2\u011a\u011f\5\36\20"+
-		"\2\u011b\u011f\7$\2\2\u011c\u011f\7\23\2\2\u011d\u011f\7#\2\2\u011e\u011a"+
-		"\3\2\2\2\u011e\u011b\3\2\2\2\u011e\u011c\3\2\2\2\u011e\u011d\3\2\2\2\u011f"+
-		"\u0120\3\2\2\2\u0120\u0121\7\20\2\2\u0121+\3\2\2\2\u0122\u0123\7\22\2"+
-		"\2\u0123\u0124\7\17\2\2\u0124\u0125\t\5\2\2\u0125\u0126\7\20\2\2\u0126"+
-		"-\3\2\2\2\u0127\u012a\5B\"\2\u0128\u012a\7\7\2\2\u0129\u0127\3\2\2\2\u0129"+
-		"\u0128\3\2\2\2\u012a/\3\2\2\2\u012b\u012c\7\30\2\2\u012c\u012d\5.\30\2"+
-		"\u012d\u012e\7#\2\2\u012e\u012f\5\4\3\2\u012f\u0131\7\16\2\2\u0130\u0132"+
-		"\5\"\22\2\u0131\u0130\3\2\2\2\u0131\u0132\3\2\2\2\u0132\u0134\3\2\2\2"+
-		"\u0133\u0135\5\66\34\2\u0134\u0133\3\2\2\2\u0134\u0135\3\2\2\2\u0135\u0136"+
-		"\3\2\2\2\u0136\u0137\7\r\2\2\u0137\61\3\2\2\2\u0138\u0139\7#\2\2\u0139"+
-		"\u013b\7\17\2\2\u013a\u013c\58\35\2\u013b\u013a\3\2\2\2\u013b\u013c\3"+
-		"\2\2\2\u013c\u013d\3\2\2\2\u013d\u013e\7\20\2\2\u013e\63\3\2\2\2\u013f"+
-		"\u0140\7\13\2\2\u0140\u0141\5B\"\2\u0141\u0143\7#\2\2\u0142\u0144\5\64"+
-		"\33\2\u0143\u0142\3\2\2\2\u0143\u0144\3\2\2\2\u0144\65\3\2\2\2\u0145\u014b"+
-		"\7\31\2\2\u0146\u014c\7#\2\2\u0147\u014c\5\36\20\2\u0148\u014c\7$\2\2"+
-		"\u0149\u014c\7\23\2\2\u014a\u014c\5\30\r\2\u014b\u0146\3\2\2\2\u014b\u0147"+
-		"\3\2\2\2\u014b\u0148\3\2\2\2\u014b\u0149\3\2\2\2\u014b\u014a\3\2\2\2\u014c"+
-		"\67\3\2\2\2\u014d\u0153\7#\2\2\u014e\u0153\5\36\20\2\u014f\u0153\7$\2"+
-		"\2\u0150\u0153\7\23\2\2\u0151\u0153\5\30\r\2\u0152\u014d\3\2\2\2\u0152"+
-		"\u014e\3\2\2\2\u0152\u014f\3\2\2\2\u0152\u0150\3\2\2\2\u0152\u0151\3\2"+
-		"\2\2\u0153\u0155\3\2\2\2\u0154\u0156\5:\36\2\u0155\u0154\3\2\2\2\u0155"+
-		"\u0156\3\2\2\2\u01569\3\2\2\2\u0157\u015d\7\13\2\2\u0158\u015e\7#\2\2"+
-		"\u0159\u015e\5\36\20\2\u015a\u015e\7$\2\2\u015b\u015e\7\23\2\2\u015c\u015e"+
-		"\5\30\r\2\u015d\u0158\3\2\2\2\u015d\u0159\3\2\2\2\u015d\u015a\3\2\2\2"+
-		"\u015d\u015b\3\2\2\2\u015d\u015c\3\2\2\2\u015e\u0160\3\2\2\2\u015f\u0161"+
-		"\5:\36\2\u0160\u015f\3\2\2\2\u0160\u0161\3\2\2\2\u0161;\3\2\2\2\u0162"+
-		"\u0163\7\35\2\2\u0163\u0164\7\17\2\2\u0164\u0165\7#\2\2\u0165\u0166\7"+
-		"\20\2\2\u0166=\3\2\2\2\u0167\u0168\7\37\2\2\u0168\u0169\7\17\2\2\u0169"+
-		"\u016a\7#\2\2\u016a\u016b\7\20\2\2\u016b?\3\2\2\2\u016c\u016d\7\36\2\2"+
-		"\u016d\u016e\7\17\2\2\u016e\u016f\7#\2\2\u016f\u0170\7\20\2\2\u0170A\3"+
-		"\2\2\2\u0171\u0172\t\6\2\2\u0172C\3\2\2\2/GPRXcks|\u0080\u0083\u008b\u0095"+
-		"\u0099\u009e\u00a5\u00ab\u00b2\u00b9\u00c0\u00ca\u00d1\u00d6\u00dd\u00e2"+
-		"\u00e7\u00ed\u00f0\u00f8\u00fa\u0101\u0107\u010c\u0112\u0114\u011e\u0129"+
-		"\u0131\u0134\u013b\u0143\u014b\u0152\u0155\u015d\u0160";
+		"\u00f0\u00e9\3\2\2\2\u00f1!\3\2\2\2\u00f2\u00fa\5\b\5\2\u00f3\u00fa\5"+
+		"\20\t\2\u00f4\u00fa\5$\23\2\u00f5\u00fa\5\62\32\2\u00f6\u00fa\5*\26\2"+
+		"\u00f7\u00fa\5,\27\2\u00f8\u00fa\5(\25\2\u00f9\u00f2\3\2\2\2\u00f9\u00f3"+
+		"\3\2\2\2\u00f9\u00f4\3\2\2\2\u00f9\u00f5\3\2\2\2\u00f9\u00f6\3\2\2\2\u00f9"+
+		"\u00f7\3\2\2\2\u00f9\u00f8\3\2\2\2\u00fa\u00fb\3\2\2\2\u00fb\u00f9\3\2"+
+		"\2\2\u00fb\u00fc\3\2\2\2\u00fc#\3\2\2\2\u00fd\u00fe\7\27\2\2\u00fe\u00ff"+
+		"\7\17\2\2\u00ff\u0100\7#\2\2\u0100\u0102\7\f\2\2\u0101\u0103\5\36\20\2"+
+		"\u0102\u0101\3\2\2\2\u0102\u0103\3\2\2\2\u0103\u0104\3\2\2\2\u0104\u0105"+
+		"\7\f\2\2\u0105\u0106\5\36\20\2\u0106\u0108\7\f\2\2\u0107\u0109\5\36\20"+
+		"\2\u0108\u0107\3\2\2\2\u0108\u0109\3\2\2\2\u0109\u010a\3\2\2\2\u010a\u010b"+
+		"\7\20\2\2\u010b\u010d\7\16\2\2\u010c\u010e\5&\24\2\u010d\u010c\3\2\2\2"+
+		"\u010d\u010e\3\2\2\2\u010e\u010f\3\2\2\2\u010f\u0110\7\r\2\2\u0110%\3"+
+		"\2\2\2\u0111\u0114\5\"\22\2\u0112\u0114\5(\25\2\u0113\u0111\3\2\2\2\u0113"+
+		"\u0112\3\2\2\2\u0114\u0115\3\2\2\2\u0115\u0113\3\2\2\2\u0115\u0116\3\2"+
+		"\2\2\u0116\'\3\2\2\2\u0117\u0118\t\4\2\2\u0118)\3\2\2\2\u0119\u011a\7"+
+		"\21\2\2\u011a\u011f\7\17\2\2\u011b\u0120\5\36\20\2\u011c\u0120\7$\2\2"+
+		"\u011d\u0120\7\23\2\2\u011e\u0120\7#\2\2\u011f\u011b\3\2\2\2\u011f\u011c"+
+		"\3\2\2\2\u011f\u011d\3\2\2\2\u011f\u011e\3\2\2\2\u0120\u0121\3\2\2\2\u0121"+
+		"\u0122\7\20\2\2\u0122+\3\2\2\2\u0123\u0124\7\22\2\2\u0124\u0125\7\17\2"+
+		"\2\u0125\u0126\t\5\2\2\u0126\u0127\7\20\2\2\u0127-\3\2\2\2\u0128\u012b"+
+		"\5B\"\2\u0129\u012b\7\7\2\2\u012a\u0128\3\2\2\2\u012a\u0129\3\2\2\2\u012b"+
+		"/\3\2\2\2\u012c\u012d\7\30\2\2\u012d\u012e\5.\30\2\u012e\u012f\7#\2\2"+
+		"\u012f\u0130\5\4\3\2\u0130\u0132\7\16\2\2\u0131\u0133\5\"\22\2\u0132\u0131"+
+		"\3\2\2\2\u0132\u0133\3\2\2\2\u0133\u0135\3\2\2\2\u0134\u0136\5\66\34\2"+
+		"\u0135\u0134\3\2\2\2\u0135\u0136\3\2\2\2\u0136\u0137\3\2\2\2\u0137\u0138"+
+		"\7\r\2\2\u0138\61\3\2\2\2\u0139\u013a\7#\2\2\u013a\u013c\7\17\2\2\u013b"+
+		"\u013d\58\35\2\u013c\u013b\3\2\2\2\u013c\u013d\3\2\2\2\u013d\u013e\3\2"+
+		"\2\2\u013e\u013f\7\20\2\2\u013f\63\3\2\2\2\u0140\u0141\7\13\2\2\u0141"+
+		"\u0142\5B\"\2\u0142\u0144\7#\2\2\u0143\u0145\5\64\33\2\u0144\u0143\3\2"+
+		"\2\2\u0144\u0145\3\2\2\2\u0145\65\3\2\2\2\u0146\u014c\7\31\2\2\u0147\u014d"+
+		"\7#\2\2\u0148\u014d\5\36\20\2\u0149\u014d\7$\2\2\u014a\u014d\7\23\2\2"+
+		"\u014b\u014d\5\30\r\2\u014c\u0147\3\2\2\2\u014c\u0148\3\2\2\2\u014c\u0149"+
+		"\3\2\2\2\u014c\u014a\3\2\2\2\u014c\u014b\3\2\2\2\u014d\67\3\2\2\2\u014e"+
+		"\u0154\7#\2\2\u014f\u0154\5\36\20\2\u0150\u0154\7$\2\2\u0151\u0154\7\23"+
+		"\2\2\u0152\u0154\5\30\r\2\u0153\u014e\3\2\2\2\u0153\u014f\3\2\2\2\u0153"+
+		"\u0150\3\2\2\2\u0153\u0151\3\2\2\2\u0153\u0152\3\2\2\2\u0154\u0156\3\2"+
+		"\2\2\u0155\u0157\5:\36\2\u0156\u0155\3\2\2\2\u0156\u0157\3\2\2\2\u0157"+
+		"9\3\2\2\2\u0158\u015e\7\13\2\2\u0159\u015f\7#\2\2\u015a\u015f\5\36\20"+
+		"\2\u015b\u015f\7$\2\2\u015c\u015f\7\23\2\2\u015d\u015f\5\30\r\2\u015e"+
+		"\u0159\3\2\2\2\u015e\u015a\3\2\2\2\u015e\u015b\3\2\2\2\u015e\u015c\3\2"+
+		"\2\2\u015e\u015d\3\2\2\2\u015f\u0161\3\2\2\2\u0160\u0162\5:\36\2\u0161"+
+		"\u0160\3\2\2\2\u0161\u0162\3\2\2\2\u0162;\3\2\2\2\u0163\u0164\7\35\2\2"+
+		"\u0164\u0165\7\17\2\2\u0165\u0166\7#\2\2\u0166\u0167\7\20\2\2\u0167=\3"+
+		"\2\2\2\u0168\u0169\7\37\2\2\u0169\u016a\7\17\2\2\u016a\u016b\7#\2\2\u016b"+
+		"\u016c\7\20\2\2\u016c?\3\2\2\2\u016d\u016e\7\36\2\2\u016e\u016f\7\17\2"+
+		"\2\u016f\u0170\7#\2\2\u0170\u0171\7\20\2\2\u0171A\3\2\2\2\u0172\u0173"+
+		"\t\6\2\2\u0173C\3\2\2\2/GPRXcks|\u0080\u0083\u008b\u0095\u0099\u009e\u00a5"+
+		"\u00ab\u00b2\u00b9\u00c0\u00ca\u00d1\u00d6\u00dd\u00e2\u00e7\u00ed\u00f0"+
+		"\u00f9\u00fb\u0102\u0108\u010d\u0113\u0115\u011f\u012a\u0132\u0135\u013c"+
+		"\u0144\u014c\u0153\u0156\u015e\u0161";
 	public static final ATN _ATN =
 		new ATNDeserializer().deserialize(_serializedATN.toCharArray());
 	static {

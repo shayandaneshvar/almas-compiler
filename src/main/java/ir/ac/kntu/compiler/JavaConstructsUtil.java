@@ -165,7 +165,7 @@ public final class JavaConstructsUtil {
     public static String getLoop(ALMASParser.LoopContext ctx) {
         String start, end, inc;
         String[] numbers = ctx.getText()
-                .substring(7, ctx.getText().length() - 3).split(":");
+                .substring(7, ctx.getText().indexOf(')')).split(":");
         start = numbers[0].trim().isEmpty() ? "0" : numbers[0].trim();
         end = numbers[1].trim();
         inc = numbers[2].trim().isEmpty() ? "1" : numbers[2].trim();
