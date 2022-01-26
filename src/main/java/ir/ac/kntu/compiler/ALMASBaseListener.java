@@ -135,6 +135,18 @@ public class ALMASBaseListener implements ALMASListener {
 	 *
 	 * <p>The default implementation does nothing.</p>
 	 */
+	@Override public void enterBare_elif(ALMASParser.Bare_elifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
+	@Override public void exitBare_elif(ALMASParser.Bare_elifContext ctx) { }
+	/**
+	 * {@inheritDoc}
+	 *
+	 * <p>The default implementation does nothing.</p>
+	 */
 	@Override public void enterElse_st(ALMASParser.Else_stContext ctx) { }
 	/**
 	 * {@inheritDoc}

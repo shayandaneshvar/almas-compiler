@@ -107,6 +107,16 @@ public interface ALMASListener extends ParseTreeListener {
 	 */
 	void exitElif(ALMASParser.ElifContext ctx);
 	/**
+	 * Enter a parse tree produced by {@link ALMASParser#bare_elif}.
+	 * @param ctx the parse tree
+	 */
+	void enterBare_elif(ALMASParser.Bare_elifContext ctx);
+	/**
+	 * Exit a parse tree produced by {@link ALMASParser#bare_elif}.
+	 * @param ctx the parse tree
+	 */
+	void exitBare_elif(ALMASParser.Bare_elifContext ctx);
+	/**
 	 * Enter a parse tree produced by {@link ALMASParser#else_st}.
 	 * @param ctx the parse tree
 	 */

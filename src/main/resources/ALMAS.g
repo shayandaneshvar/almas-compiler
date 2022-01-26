@@ -21,7 +21,8 @@ boolean_assignment: ASSIGNMENT_OP (BOOLEAN | expressions | function_call | boole
 
 if_st :  bare_if elif? else_st? ;
 bare_if: IF_SYMBOL LEFT_P expressions RIGHT_P CURLY_LEFT statements? CURLY_RIGHT ;
-elif: ELSE_IF_SYMBOL LEFT_P expressions RIGHT_P CURLY_LEFT statements? CURLY_RIGHT elif? ;
+elif: bare_elif elif? ;
+bare_elif: ELSE_IF_SYMBOL LEFT_P expressions RIGHT_P CURLY_LEFT statements? CURLY_RIGHT;
 else_st : ELSE_SYMBOL CURLY_LEFT statements? CURLY_RIGHT;
 
 expressions:  expression ((BINARY_BOOLEAN_OP|EQUAL) expressions)?;
@@ -34,9 +35,9 @@ relop_expression:
 decimal_expressions: decimal_expression (BINARY_DECIMAL_OP decimal_expressions)?;
 decimal_expression: (IDENTIFIER|DECIMAL) (BINARY_DECIMAL_OP (IDENTIFIER|DECIMAL))? | LEFT_P (IDENTIFIER|DECIMAL) (BINARY_DECIMAL_OP (IDENTIFIER|DECIMAL))? RIGHT_P ;
 
-statements: (assignment | if_st | loop | function_call | print | input)+ ;
+statements: (assignment | if_st | loop | function_call | print | input| break_continue)+ ;
 loop : FOR_SYMBOL LEFT_P IDENTIFIER COLON decimal_expressions? COLON decimal_expressions COLON decimal_expressions? RIGHT_P CURLY_LEFT loop_statements? CURLY_RIGHT ;
-loop_statements: (statements | break_continue)+ ;
+loop_statements: (statements)+ ;
 break_continue: CONTINUE_SYMBOL | BREAK_SYMBOL;
 
 print: PRINT_OP LEFT_P (decimal_expressions|STRING|BOOLEAN|IDENTIFIER) RIGHT_P;

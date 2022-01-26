@@ -129,12 +129,20 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void enterElif(ALMASParser.ElifContext ctx) {
+    }
+
+    @Override
+    public void enterBare_elif(ALMASParser.Bare_elifContext ctx) {
         emit(JavaConstructsUtil.getElif(ctx));
     }
 
     @Override
-    public void exitElif(ALMASParser.ElifContext ctx) {
+    public void exitBare_elif(ALMASParser.Bare_elifContext ctx) {
         emit("}\n");
+    }
+
+    @Override
+    public void exitElif(ALMASParser.ElifContext ctx) {
     }
 
     @Override
@@ -144,7 +152,8 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void exitElse_st(ALMASParser.Else_stContext ctx) {
-        emit("}\n");
+        if(ctx.ELSE_SYMBOL() != null)
+            emit("}\n");
     }
 
 //    @Override

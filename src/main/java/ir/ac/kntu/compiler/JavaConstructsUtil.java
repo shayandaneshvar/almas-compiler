@@ -180,7 +180,7 @@ public final class JavaConstructsUtil {
         return IF.replace("TERM", translateExpression(ctx.expressions().getText()));
     }
 
-    public static String getElif(ALMASParser.ElifContext ctx) {
+    public static String getElif(ALMASParser.Bare_elifContext ctx) {
         return ELIF.replace("TERM", translateExpression(ctx.expressions().getText()));
     }
 
