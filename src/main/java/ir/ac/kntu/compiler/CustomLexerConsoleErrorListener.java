@@ -26,11 +26,9 @@ public class CustomLexerConsoleErrorListener extends ConsoleErrorListener {
         System.err.println("line " + line + ":" + charPositionInLine + " " + msg);
         int startingIndex = msg.indexOf("'") + 1;
         int endingIndex = msg.lastIndexOf("'");
-        int row = line;
-        int column = charPositionInLine;
         String token = msg.substring(startingIndex, endingIndex);
         List<InvalidToken> tokenOccurrences = invalidTokens.getOrDefault(token, new ArrayList<>());
-        tokenOccurrences.add(new InvalidToken(row, column, token));
+        tokenOccurrences.add(new InvalidToken(line, charPositionInLine, token));
         invalidTokens.put(token, tokenOccurrences);
     }
 }

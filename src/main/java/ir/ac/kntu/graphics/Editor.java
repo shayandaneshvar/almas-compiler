@@ -76,7 +76,6 @@ public class Editor extends Application {
             stage.setScene(scene);
             stage.setTitle("ALMAS IDE with Integrated Compiler");
             stage.show();
-//        stage.setAlwaysOnTop(true);
             stage.setOnCloseRequest(status -> System.exit(0));
             stage.getIcons().add(new Image("file://" + Objects.requireNonNull(getClass()
                     .getResource("/images/almas.jfif")).getFile()));

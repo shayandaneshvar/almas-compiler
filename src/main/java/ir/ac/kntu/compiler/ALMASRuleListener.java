@@ -62,7 +62,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
         emit(JavaConstructsUtil.getAssignment(ctx));
 
         String error = SemanticChecker.checkIdentifierSemantics(ctx.IDENTIFIER(), getCurrentBlockVariables());
-        if(!error.isEmpty()) {
+        if (!error.isEmpty()) {
             semanticErrors.add(error);
         }
 
@@ -78,7 +78,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     public void enterString_assignment(ALMASParser.String_assignmentContext ctx) {
         emit(JavaConstructsUtil.getStringAssignment(ctx));
 
-        if(ctx.IDENTIFIER() != null) {
+        if (ctx.IDENTIFIER() != null) {
             String error = SemanticChecker.checkVariableIsDefined(ctx.IDENTIFIER(), getCurrentBlock());
             if (!error.isEmpty()) {
                 semanticErrors.add(error);
@@ -91,7 +91,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     public void enterDecimal_assignment(ALMASParser.Decimal_assignmentContext ctx) {
         emit(JavaConstructsUtil.getDecimalAssignment(ctx));
 
-        if(ctx.IDENTIFIER() != null) {
+        if (ctx.IDENTIFIER() != null) {
             String error = SemanticChecker.checkVariableIsDefined(ctx.IDENTIFIER(), getCurrentBlock());
             if (!error.isEmpty()) {
                 semanticErrors.add(error);
@@ -103,7 +103,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     public void enterBoolean_assignment(ALMASParser.Boolean_assignmentContext ctx) {
         emit(JavaConstructsUtil.getBooleanAssignment(ctx));
 
-        if(ctx.IDENTIFIER() != null) {
+        if (ctx.IDENTIFIER() != null) {
             String error = SemanticChecker.checkVariableIsDefined(ctx.IDENTIFIER(), getCurrentBlock());
             if (!error.isEmpty()) {
                 semanticErrors.add(error);
@@ -154,39 +154,36 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void exitElse_st(ALMASParser.Else_stContext ctx) {
-        if(ctx.ELSE_SYMBOL() != null)
+        if (ctx.ELSE_SYMBOL() != null)
             emit("}\n");
         removeCurrentBlock();
     }
 
     private void findAllIdentifiersOfExpression(RuleContext ctx, List<TerminalNode> identifiers) {
-        if(ctx instanceof ALMASParser.ExpressionsContext) {
+        if (ctx instanceof ALMASParser.ExpressionsContext) {
             findAllIdentifiersOfExpression(((ALMASParser.ExpressionsContext) ctx).expressions(), identifiers);
             findAllIdentifiersOfExpression(((ALMASParser.ExpressionsContext) ctx).expression(), identifiers);
-        }
-        else if(ctx instanceof ALMASParser.ExpressionContext) {
-            if(((ALMASParser.ExpressionContext) ctx).IDENTIFIER() != null) {
+        } else if (ctx instanceof ALMASParser.ExpressionContext) {
+            if (((ALMASParser.ExpressionContext) ctx).IDENTIFIER() != null) {
                 identifiers.add(((ALMASParser.ExpressionContext) ctx).IDENTIFIER());
             }
             findAllIdentifiersOfExpression(((ALMASParser.ExpressionContext) ctx).expression(), identifiers);
             findAllIdentifiersOfExpression(((ALMASParser.ExpressionContext) ctx).relop_expression(), identifiers);
-        }
-        else if(ctx instanceof ALMASParser.Relop_expressionContext) {
+        } else if (ctx instanceof ALMASParser.Relop_expressionContext) {
             identifiers.addAll(((ALMASParser.Relop_expressionContext) ctx).IDENTIFIER());
             findAllIdentifiersOfExpression(((ALMASParser.Relop_expressionContext) ctx).relop_expression(), identifiers);
-        }
-        else if(ctx instanceof ALMASParser.Decimal_expressionsContext) {
+        } else if (ctx instanceof ALMASParser.Decimal_expressionsContext) {
             findAllIdentifiersOfDecimalExpression(ctx, identifiers);
         }
     }
 
     private void findAllIdentifiersOfDecimalExpression(RuleContext ctx, List<TerminalNode> identifiers) {
-        if(ctx instanceof ALMASParser.Decimal_expressionsContext) {
+        if (ctx instanceof ALMASParser.Decimal_expressionsContext) {
             findAllIdentifiersOfDecimalExpression(((ALMASParser.Decimal_expressionsContext) ctx).decimal_expression(), identifiers);
             findAllIdentifiersOfDecimalExpression(((ALMASParser.Decimal_expressionsContext) ctx).decimal_expressions(), identifiers);
         }
 
-        if(ctx instanceof ALMASParser.Decimal_expressionContext) {
+        if (ctx instanceof ALMASParser.Decimal_expressionContext) {
             identifiers.addAll(((ALMASParser.Decimal_expressionContext) ctx).IDENTIFIER());
         }
     }
@@ -197,18 +194,19 @@ public class ALMASRuleListener extends ALMASBaseListener {
         findAllIdentifiersOfExpression(ctx, identifiers);
         identifiers.forEach(identifier -> {
             String error = SemanticChecker.checkVariableIsDefined(identifier, getCurrentBlock());
-            if(!error.isEmpty()) {
+            if (!error.isEmpty()) {
                 semanticErrors.add(error);
             }
         });
     }
+
     @Override
     public void enterDecimal_expressions(ALMASParser.Decimal_expressionsContext ctx) {
         LinkedList<TerminalNode> identifiers = new LinkedList<>();
         findAllIdentifiersOfDecimalExpression(ctx, identifiers);
         identifiers.forEach(identifier -> {
             String error = SemanticChecker.checkVariableIsDefined(identifier, getCurrentBlock());
-            if(!error.isEmpty()) {
+            if (!error.isEmpty()) {
                 semanticErrors.add(error);
             }
         });
@@ -259,7 +257,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void exitJava_code_block(ALMASParser.Java_code_blockContext ctx) {
-        emit(ctx.getText().substring(1,ctx.getText().length() - 1));
+        emit(ctx.getText().substring(1, ctx.getText().length() - 1));
     }
 
     @Override
@@ -273,7 +271,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     public void exitBreak_continue(ALMASParser.Break_continueContext ctx) {
         emit(JavaConstructsUtil.getBreakContinueSt(ctx));
         String error = SemanticChecker.checkBreakAndContinueSemantics(ctx);
-        if(!error.isEmpty()) {
+        if (!error.isEmpty()) {
             semanticErrors.add(error);
         }
     }
@@ -290,7 +288,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     private void addFunctionInputToCurrentBlock(ALMASParser.FunctionContext ctx) {
         addBlock();
-        if(ctx.func_inputs().IDENTIFIER() != null) {
+        if (ctx.func_inputs().IDENTIFIER() != null) {
             addVariableToCurrentBlock(ctx.func_inputs().IDENTIFIER().getText());
             ALMASParser.More_func_inputsContext funcInput = ctx.func_inputs().more_func_inputs();
             while (funcInput != null) {
@@ -308,7 +306,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
         addFunctionInputToCurrentBlock(ctx);
         String error = SemanticChecker.checkIdentifierSemantics(ctx.IDENTIFIER()
                 , getMainBlock().getVariables());
-        if(!error.isEmpty()) {
+        if (!error.isEmpty()) {
             semanticErrors.add(error);
         }
         addVariableToMainBlock(ctx.IDENTIFIER().getText());
@@ -324,7 +322,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     private List<TerminalNode> getFunctionCallIdentifiers(ALMASParser.Function_callContext ctx) {
         List<TerminalNode> identifiers = new LinkedList<>();
 
-        if(ctx.func_args().IDENTIFIER() != null) {
+        if (ctx.func_args().IDENTIFIER() != null) {
             identifiers.add(ctx.func_args().IDENTIFIER());
 
             ALMASParser.More_func_argsContext moreFuncArg = ctx.func_args().more_func_args();
@@ -344,12 +342,12 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
         List<TerminalNode> functionCallIdentifiers = getFunctionCallIdentifiers(ctx);
         if (functionCallIdentifiers != null) {
-           functionCallIdentifiers.forEach(identifier -> {
-               String error = SemanticChecker.checkVariableIsDefined(identifier, getCurrentBlock());
-               if(!error.isEmpty()) {
-                   semanticErrors.add(error);
-               }
-           });
+            functionCallIdentifiers.forEach(identifier -> {
+                String error = SemanticChecker.checkVariableIsDefined(identifier, getCurrentBlock());
+                if (!error.isEmpty()) {
+                    semanticErrors.add(error);
+                }
+            });
         }
 
     }
