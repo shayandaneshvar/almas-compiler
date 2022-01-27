@@ -112,8 +112,9 @@ public class EditorPresenter implements Initializable {
                             .reduce((x, y) -> x + y).orElse(" ! "));
             return;
         }
+        terminalTextArea.setText(terminalTextArea.getText() + "Code has No Syntax Errors...\n");
         if (!Compiler.INSTANCE.getSemanticErrors().isEmpty()) {
-            terminalTextArea.setText(terminalTextArea.getText() + "Code has semantic Errors... \n");
+            terminalTextArea.setText(terminalTextArea.getText() + "Code has Semantic Errors... \n");
             terminalTextArea.setText(terminalTextArea.getText() +
                     Compiler.INSTANCE
                             .getSemanticErrors()
@@ -122,7 +123,7 @@ public class EditorPresenter implements Initializable {
                             .reduce((x, y) -> x + y).orElse(" ! "));
             return;
         }
-        terminalTextArea.setText(terminalTextArea.getText() + "Code has No Syntax Errors...\n");
+        terminalTextArea.setText(terminalTextArea.getText() + "Code has No Semantic Errors...\n");
         String javaCode = function.apply(javaFile.getName().substring(0, javaFile.getName().length() - 5));
         try (FileWriter fw = new FileWriter(javaFile);
              BufferedWriter bf = new BufferedWriter(fw);

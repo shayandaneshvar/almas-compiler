@@ -4,6 +4,8 @@ import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
 import org.antlr.v4.runtime.tree.TerminalNode;
 
+import java.util.List;
+
 public final class SemanticChecker {
 
     private static String getLocation(Token token) {
@@ -29,6 +31,7 @@ public final class SemanticChecker {
         return "";
     }
 
+
     private static boolean breakAndContinueAreInLoopContext(RuleContext node) {
         if (node instanceof ALMASParser.LoopContext) {
             return true;
@@ -42,12 +45,40 @@ public final class SemanticChecker {
     }
 
     public static String checkBreakAndContinueSemantics(ALMASParser.Break_continueContext ctx) {
-        if(!breakAndContinueAreInLoopContext(ctx.parent)) {
+        if (!breakAndContinueAreInLoopContext(ctx.parent)) {
             TerminalNode terminal = ctx.getText().equals("break") ?
                     ctx.BREAK_SYMBOL() : ctx.CONTINUE_SYMBOL();
             return ctx.getText() + " should be in a loop. at  (row,col) => \"" +
                     getLocation(terminal.getSymbol());
         }
         return "";
+    }
+
+    public static String checkIdentifierSemantics(TerminalNode terminalNode, List<String> identifiers) {
+        String identifier = terminalNode.getText();
+        if (identifiers.stream().anyMatch(id -> id.equals(identifier))) {
+            return "Identifier " + identifier + " has been already used at (row, col) => " +
+                    getLocation(terminalNode.getSymbol());
+        }
+        return "";
+    }
+
+    private static boolean variableIsDefined(String identifier, Block currentBlock) {
+        if (currentBlock == null) {
+            return false;
+        }
+
+        if (currentBlock.containsVariable(identifier))
+            return true;
+        else
+            return variableIsDefined(identifier, currentBlock.getParent());
+    }
+
+    public static String checkVariableIsDefined(TerminalNode terminalNode, Block currentBlock) {
+        if(variableIsDefined(terminalNode.getText(), currentBlock))
+            return "";
+
+        return "identifier " + terminalNode.getText() + " is not defined at (row, col) => " +
+                getLocation(terminalNode.getSymbol());
     }
 }
