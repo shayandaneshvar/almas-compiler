@@ -173,7 +173,7 @@ public class EditorPresenter implements Initializable {
     @FXML
     void run(MouseEvent event) {
         compile(event);
-        String runnerScript = "start cmd.exe @cmd /k \"java FILENAME\"";
+        String runnerScript = "start cmd.exe @cmd /k \"color fc & java FILENAME\"";
         File f = new File(javaFile.getParent() + "/run.bat");
         try (FileWriter fw = new FileWriter(f);
              BufferedWriter bf = new BufferedWriter(fw);
