@@ -11,10 +11,11 @@ public class ALMASRuleListener extends ALMASBaseListener {
     private String javaCode = "";
     private String codes = "";
     private String functions = "";
-    private Set<String> semanticErrors = new HashSet<>();
+    private final Set<String> semanticErrors = new HashSet<>();
     private boolean functionContext = false;
     private final String filename;
-    private final Stack<Block> blockStack = new Stack<>();
+    private final Stack<Block> mainBlockStack = new Stack<>();
+    private final Stack<Block> functionBlockStack = new Stack<>();
 
     private void emit(String text) {
         if (functionContext) {
@@ -44,7 +45,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     @Override
     public void exitProgram_body(ALMASParser.Program_bodyContext ctx) {
-        removeCurrentBlock();
+        //removeCurrentBlock();
     }
 
     @Override
@@ -61,7 +62,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     public void enterAssignment(ALMASParser.AssignmentContext ctx) {
         emit(JavaConstructsUtil.getAssignment(ctx));
 
-        String error = SemanticChecker.checkIdentifierSemantics(ctx.IDENTIFIER(), getCurrentBlockVariables());
+        String error = SemanticChecker.checkVariableIsAlreadyDefined(ctx.IDENTIFIER(), getCurrentBlock());
         if (!error.isEmpty()) {
             semanticErrors.add(error);
         }
@@ -213,22 +214,36 @@ public class ALMASRuleListener extends ALMASBaseListener {
     }
 
     private void addBlock() {
-        Block parent = blockStack.size() > 0 ? blockStack.peek() : null;
-        int key = blockStack.size();
+        Stack<Block> blocks = null;
+        if (functionContext) {
+            blocks = functionBlockStack;
+        } else {
+            blocks = mainBlockStack;
+        }
+        Block parent = blocks.size() > 0 ? blocks.peek() : null;
+        int key = blocks.size();
         Block block = new Block(key, parent);
-        blockStack.push(block);
+        blocks.push(block);
     }
 
     private void removeCurrentBlock() {
-        blockStack.pop();
+        if (functionContext) {
+            functionBlockStack.pop();
+        } else {
+            mainBlockStack.pop();
+        }
     }
 
     private Block getCurrentBlock() {
-        return blockStack.peek();
+        if (functionContext) {
+            return functionBlockStack.peek();
+        }
+        return mainBlockStack.peek();
     }
 
+
     private Block getMainBlock() {
-        return blockStack.firstElement();
+        return mainBlockStack.firstElement();
     }
 
     private void addVariableToMainBlock(String variableName) {
@@ -243,6 +258,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
         return getCurrentBlock().getVariables();
     }
 
+
     @Override
     public void enterLoop(ALMASParser.LoopContext ctx) {
         emit(JavaConstructsUtil.getLoop(ctx));
@@ -250,10 +266,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
         addVariableToCurrentBlock(ctx.IDENTIFIER().getText());
     }
 
-    @Override
-    public void enterJava_code_block(ALMASParser.Java_code_blockContext ctx) {
-        super.enterJava_code_block(ctx);
-    }
 
     @Override
     public void exitJava_code_block(ALMASParser.Java_code_blockContext ctx) {
@@ -304,8 +316,8 @@ public class ALMASRuleListener extends ALMASBaseListener {
         emit(JavaConstructsUtil.getFunction(ctx));
         addBlock();
         addFunctionInputToCurrentBlock(ctx);
-        String error = SemanticChecker.checkIdentifierSemantics(ctx.IDENTIFIER()
-                , getMainBlock().getVariables());
+        String error = SemanticChecker.checkVariableIsAlreadyDefined(ctx.IDENTIFIER()
+                , getMainBlock());
         if (!error.isEmpty()) {
             semanticErrors.add(error);
         }
@@ -315,8 +327,8 @@ public class ALMASRuleListener extends ALMASBaseListener {
     @Override
     public void exitFunction(ALMASParser.FunctionContext ctx) {
         emit(JavaConstructsUtil.getFunctionReturnType(ctx));
-        functionContext = false;
         removeCurrentBlock();
+        functionContext = false;
     }
 
     private List<TerminalNode> getFunctionCallIdentifiers(ALMASParser.Function_callContext ctx) {
@@ -381,11 +393,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
         super.exitEveryRule(ctx);
     }
 
-    /**
-     * lexer terminal tokens
-     *
-     * @param node
-     */
     @Override
     public void visitTerminal(TerminalNode node) {
         super.visitTerminal(node);

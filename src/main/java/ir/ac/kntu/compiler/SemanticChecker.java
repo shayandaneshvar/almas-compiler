@@ -73,6 +73,14 @@ public final class SemanticChecker {
             return variableIsDefined(identifier, currentBlock.getParent());
     }
 
+    public static String checkVariableIsAlreadyDefined(TerminalNode terminalNode, Block currentBlock){
+        if(!variableIsDefined(terminalNode.getText(), currentBlock))
+            return "";
+
+        return "identifier " + terminalNode.getText() + " has already been defined at (row, col) => " +
+                getLocation(terminalNode.getSymbol());
+    }
+
     public static String checkVariableIsDefined(TerminalNode terminalNode, Block currentBlock) {
         if(variableIsDefined(terminalNode.getText(), currentBlock))
             return "";

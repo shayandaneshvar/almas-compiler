@@ -25,10 +25,6 @@ public class Editor extends Application {
         return Optional.of(INSTANCE).get();
     }
 
-    public Scene getScene() {
-        return scene;
-    }
-
     public Stage getStage() {
         return stage;
     }
@@ -66,7 +62,7 @@ public class Editor extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws InterruptedException {
+    public void start(Stage stage) {
         this.stage.setOnHiding(e->{
             System.out.println("Closing Splash..");
             this.stage = stage;

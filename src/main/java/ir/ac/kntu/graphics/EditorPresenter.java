@@ -133,8 +133,22 @@ public class EditorPresenter implements Initializable {
             e.printStackTrace();
         }
         try {
-            Runtime.getRuntime().exec("javac " + javaFile.getPath());
-        } catch (IOException e) {
+            Process p = Runtime.getRuntime().exec("javac " + javaFile.getPath());
+            BufferedReader en = new BufferedReader(new InputStreamReader(p.getErrorStream()));
+            p.waitFor();
+            System.out.println("en:" + en.readLine());
+//            p.waitFor();
+            String error = en.readLine();
+            if (error != null) {
+                terminalTextArea.setText(terminalTextArea.getText() + "\n" + "There are Errors on the Java Side: \n ");
+                do {
+                    terminalTextArea.setText(terminalTextArea.getText() + "\n" + error);
+                } while ((error = en.readLine()) != null);
+            } else {
+                terminalTextArea.setText(terminalTextArea.getText() + "Compiled Successfully!");
+            }
+            en.close();
+        } catch (IOException | InterruptedException e) {
             e.printStackTrace();
         }
     }
