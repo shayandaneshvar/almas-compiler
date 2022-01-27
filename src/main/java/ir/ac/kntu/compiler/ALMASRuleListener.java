@@ -244,6 +244,10 @@ public class ALMASRuleListener extends ALMASBaseListener {
     @Override
     public void exitBreak_continue(ALMASParser.Break_continueContext ctx) {
         emit(JavaConstructsUtil.getBreakContinueSt(ctx));
+        String error = SemanticChecker.checkBreakAndContinueSemantics(ctx);
+        if(!error.isEmpty()) {
+            semanticErrors.add(error);
+        }
     }
 //    @Override
 //    public void enterLoop_statements(ALMASParser.Loop_statementsContext ctx) {

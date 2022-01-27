@@ -17,6 +17,7 @@ public enum Compiler {
     private List<List<InvalidToken>> invalidTokens = new ArrayList<>();
     private List<? extends Token> extractedTokens;
     private Set<String> syntaxErrors;
+    private Set<String> semanticErrors;
 
     public Set<String> getSyntaxErrors() {
         return syntaxErrors;
@@ -28,6 +29,10 @@ public enum Compiler {
 
     public List<? extends Token> getExtractedTokens() {
         return extractedTokens;
+    }
+
+    public Set<String> getSemanticErrors() {
+        return semanticErrors;
     }
 
     public String getTokenName(int tokenId) {
@@ -75,9 +80,8 @@ public enum Compiler {
         ParseTreeWalker walker = new ParseTreeWalker();
         ALMASRuleListener semanticListener = new ALMASRuleListener("FILENAME");
         walker.walk(semanticListener, tree);
+        semanticErrors = semanticListener.getSemanticErrors();
 
-
-        System.out.println(parser.getNumberOfSyntaxErrors());
         return filename -> semanticListener.getJavaCode().replace("FILENAME", filename);
     }
 

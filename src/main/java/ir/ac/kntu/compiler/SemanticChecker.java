@@ -1,6 +1,8 @@
 package ir.ac.kntu.compiler;
 
+import org.antlr.v4.runtime.RuleContext;
 import org.antlr.v4.runtime.Token;
+import org.antlr.v4.runtime.tree.TerminalNode;
 
 public final class SemanticChecker {
 
@@ -23,6 +25,28 @@ public final class SemanticChecker {
         if (ctx.DECIMAL_TYPE() == null ^ ctx.decimal_assignment() == null) {
             return "Wrong Decimal Assignment semantics at (row,col) => " +
                     getLocation(ctx.DECIMAL_TYPE().getSymbol());
+        }
+        return "";
+    }
+
+    private static boolean breakAndContinueAreInLoopContext(RuleContext node) {
+        if (node instanceof ALMASParser.LoopContext) {
+            return true;
+        }
+
+        if (node == null) {
+            return false;
+        }
+
+        return breakAndContinueAreInLoopContext(node.parent);
+    }
+
+    public static String checkBreakAndContinueSemantics(ALMASParser.Break_continueContext ctx) {
+        if(!breakAndContinueAreInLoopContext(ctx.parent)) {
+            TerminalNode terminal = ctx.getText().equals("break") ?
+                    ctx.BREAK_SYMBOL() : ctx.CONTINUE_SYMBOL();
+            return ctx.getText() + " should be in a loop. at  (row,col) => \"" +
+                    getLocation(terminal.getSymbol());
         }
         return "";
     }
