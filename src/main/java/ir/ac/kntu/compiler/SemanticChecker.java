@@ -14,22 +14,21 @@ public final class SemanticChecker {
                 token.getCharPositionInLine() + ")";
     }
 
-    // TODO: 1/25/2022 excess bullshit
-    public static String checkAssignmentSemantics(ALMASParser.AssignmentContext ctx) {
-        if (ctx.STRING_TYPE() == null ^ ctx.string_assignment() == null) {
-            return "Wrong String Assignment semantics at (row,col) => " +
-                    getLocation(ctx.STRING_TYPE().getSymbol());
-        }
-        if (ctx.BOOLEAN_TYPE() == null ^ ctx.boolean_assignment() == null) {
-            return "Wrong Boolean Assignment semantics at (row,col) => " +
-                    getLocation(ctx.BOOLEAN_TYPE().getSymbol());
-        }
-        if (ctx.DECIMAL_TYPE() == null ^ ctx.decimal_assignment() == null) {
-            return "Wrong Decimal Assignment semantics at (row,col) => " +
-                    getLocation(ctx.DECIMAL_TYPE().getSymbol());
-        }
-        return "";
-    }
+//    public static String checkAssignmentSemantics(ALMASParser.AssignmentContext ctx) {
+//        if (ctx.STRING_TYPE() == null ^ ctx.string_assignment() == null) {
+//            return "Wrong String Assignment semantics at (row,col) => " +
+//                    getLocation(ctx.STRING_TYPE().getSymbol());
+//        }
+//        if (ctx.BOOLEAN_TYPE() == null ^ ctx.boolean_assignment() == null) {
+//            return "Wrong Boolean Assignment semantics at (row,col) => " +
+//                    getLocation(ctx.BOOLEAN_TYPE().getSymbol());
+//        }
+//        if (ctx.DECIMAL_TYPE() == null ^ ctx.decimal_assignment() == null) {
+//            return "Wrong Decimal Assignment semantics at (row,col) => " +
+//                    getLocation(ctx.DECIMAL_TYPE().getSymbol());
+//        }
+//        return "";
+//    }
 
 
     private static boolean breakAndContinueAreInLoopContext(RuleContext node) {
@@ -57,7 +56,7 @@ public final class SemanticChecker {
     public static String checkIdentifierSemantics(TerminalNode terminalNode, List<String> identifiers) {
         String identifier = terminalNode.getText();
         if (identifiers.stream().anyMatch(id -> id.equals(identifier))) {
-            return "Identifier " + identifier + " has been already used at (row, col) => " +
+            return "Identifier " + identifier + " has already been defined at (row, col) => " +
                     getLocation(terminalNode.getSymbol());
         }
         return "";

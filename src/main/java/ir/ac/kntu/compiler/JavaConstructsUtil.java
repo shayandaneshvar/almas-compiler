@@ -210,7 +210,6 @@ public final class JavaConstructsUtil {
     }
 
     public static String getFunctionReturnType(ALMASParser.FunctionContext ctx) {
-        // TODO: 1/25/2022 Semantic Checking of return type and return Value
         if (ctx.return_st() == null) {
             return "} \n";
         }

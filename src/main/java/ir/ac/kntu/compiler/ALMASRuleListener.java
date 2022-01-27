@@ -37,12 +37,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
     }
 
 
-//    @Override
-//    public void enterProgram(ALMASParser.ProgramContext ctx) {
-//
-//    }
-
-
     @Override
     public void enterProgram_body(ALMASParser.Program_bodyContext ctx) {
         addBlock();
@@ -62,21 +56,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
     public void enterFunc_inputs(ALMASParser.Func_inputsContext ctx) {
         super.enterFunc_inputs(ctx);
     }
-
-    @Override
-    public void exitFunc_inputs(ALMASParser.Func_inputsContext ctx) {
-
-    }
-
-//    @Override
-//    public void enterProgram_body(ALMASParser.Program_bodyContext ctx) {
-//        super.enterProgram_body(ctx);
-//    }
-//
-//    @Override
-//    public void exitProgram_body(ALMASParser.Program_bodyContext ctx) {
-//        super.exitProgram_body(ctx);
-//    }
 
     @Override
     public void enterAssignment(ALMASParser.AssignmentContext ctx) {
@@ -107,10 +86,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
         }
     }
 
-//    @Override
-//    public void exitString_assignment(ALMASParser.String_assignmentContext ctx) {
-//
-//    }
 
     @Override
     public void enterDecimal_assignment(ALMASParser.Decimal_assignmentContext ctx) {
@@ -124,11 +99,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
         }
     }
 
-//    @Override
-//    public void exitDecimal_assignment(ALMASParser.Decimal_assignmentContext ctx) {
-//        super.exitDecimal_assignment(ctx);
-//    }
-
     @Override
     public void enterBoolean_assignment(ALMASParser.Boolean_assignmentContext ctx) {
         emit(JavaConstructsUtil.getBooleanAssignment(ctx));
@@ -141,19 +111,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
         }
     }
 
-//    @Override
-//    public void exitBoolean_assignment(ALMASParser.Boolean_assignmentContext ctx) {
-//        super.exitBoolean_assignment(ctx);
-//    }
-
-//    @Override
-//    public void enterIf_st(ALMASParser.If_stContext ctx) {
-//    }
-
-//    @Override
-//    public void exitIf_st(ALMASParser.If_stContext ctx) {
-//        super.exitIf_st(ctx);
-//    }
 
     @Override
     public void enterBare_if(ALMASParser.Bare_ifContext ctx) {
@@ -245,32 +202,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
             }
         });
     }
-//
-//    @Override
-//    public void exitExpressions(ALMASParser.ExpressionsContext ctx) {
-//        super.exitExpressions(ctx);
-//    }
-//
-//    @Override
-//    public void enterExpression(ALMASParser.ExpressionContext ctx) {
-//        super.enterExpression(ctx);
-//    }
-//
-//    @Override
-//    public void exitExpression(ALMASParser.ExpressionContext ctx) {
-//        super.exitExpression(ctx);
-//    }
-
-//    @Override
-//    public void enterRelop_expression(ALMASParser.Relop_expressionContext ctx) {
-//        super.enterRelop_expression(ctx);
-//    }
-//
-//    @Override
-//    public void exitRelop_expression(ALMASParser.Relop_expressionContext ctx) {
-//        super.exitRelop_expression(ctx);
-//    }
-//
     @Override
     public void enterDecimal_expressions(ALMASParser.Decimal_expressionsContext ctx) {
         LinkedList<TerminalNode> identifiers = new LinkedList<>();
@@ -282,31 +213,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
             }
         });
     }
-//
-//    @Override
-//    public void exitDecimal_expressions(ALMASParser.Decimal_expressionsContext ctx) {
-//        super.exitDecimal_expressions(ctx);
-//    }
-
-//    @Override
-//    public void enterDecimal_expression(ALMASParser.Decimal_expressionContext ctx) {
-//        super.enterDecimal_expression(ctx);
-//    }
-//
-//    @Override
-//    public void exitDecimal_expression(ALMASParser.Decimal_expressionContext ctx) {
-//        super.exitDecimal_expression(ctx);
-//    }
-
-//    @Override
-//    public void enterStatements(ALMASParser.StatementsContext ctx) {
-//        super.enterStatements(ctx);
-//    }
-//
-//    @Override
-//    public void exitStatements(ALMASParser.StatementsContext ctx) {
-//        super.exitStatements(ctx);
-//    }
 
     private void addBlock() {
         Block parent = blockStack.size() > 0 ? blockStack.peek() : null;
@@ -329,7 +235,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     private void addVariableToMainBlock(String variableName) {
         getMainBlock().addVariableToBlock(variableName);
-
     }
 
     private void addVariableToCurrentBlock(String variableName) {
@@ -363,10 +268,6 @@ public class ALMASRuleListener extends ALMASBaseListener {
         removeCurrentBlock();
     }
 
-//    @Override
-//    public void enterBreak_continue(ALMASParser.Break_continueContext ctx) {
-//        super.enterBreak_continue(ctx);
-//    }
 
     @Override
     public void exitBreak_continue(ALMASParser.Break_continueContext ctx) {
@@ -376,45 +277,16 @@ public class ALMASRuleListener extends ALMASBaseListener {
             semanticErrors.add(error);
         }
     }
-//    @Override
-//    public void enterLoop_statements(ALMASParser.Loop_statementsContext ctx) {
-//        super.enterLoop_statements(ctx);
-//    }
-//
-//    @Override
-//    public void exitLoop_statements(ALMASParser.Loop_statementsContext ctx) {
-//        emit(JavaConstructsUtil.getLoopSt(ctx));
-//    }
 
     @Override
     public void enterPrint(ALMASParser.PrintContext ctx) {
         emit(JavaConstructsUtil.getPrint(ctx));
     }
 
-//    @Override
-//    public void exitPrint(ALMASParser.PrintContext ctx) {
-//        super.exitPrint(ctx);
-//    }
-
     @Override
     public void enterInput(ALMASParser.InputContext ctx) {
         emit(JavaConstructsUtil.getInput(ctx));
     }
-
-//    @Override
-//    public void exitInput(ALMASParser.InputContext ctx) {
-//        super.exitInput(ctx);
-//    }
-
-//    @Override
-//    public void enterReturn_type(ALMASParser.Return_typeContext ctx) {
-//        super.enterReturn_type(ctx);
-//    }
-//
-//    @Override
-//    public void exitReturn_type(ALMASParser.Return_typeContext ctx) {
-//        super.exitReturn_type(ctx);
-//    }
 
     private void addFunctionInputToCurrentBlock(ALMASParser.FunctionContext ctx) {
         addBlock();
@@ -434,7 +306,8 @@ public class ALMASRuleListener extends ALMASBaseListener {
         emit(JavaConstructsUtil.getFunction(ctx));
         addBlock();
         addFunctionInputToCurrentBlock(ctx);
-        String error = SemanticChecker.checkIdentifierSemantics(ctx.IDENTIFIER(), getMainBlock().getVariables());
+        String error = SemanticChecker.checkIdentifierSemantics(ctx.IDENTIFIER()
+                , getMainBlock().getVariables());
         if(!error.isEmpty()) {
             semanticErrors.add(error);
         }
@@ -481,91 +354,23 @@ public class ALMASRuleListener extends ALMASBaseListener {
 
     }
 
-//    @Override
-//    public void exitFunction_call(ALMASParser.Function_callContext ctx) {
-//        super.exitFunction_call(ctx);
-//    }
-
-//    @Override
-//    public void enterMore_func_inputs(ALMASParser.More_func_inputsContext ctx) {
-//        super.enterMore_func_inputs(ctx);
-//    }
-//
-//    @Override
-//    public void exitMore_func_inputs(ALMASParser.More_func_inputsContext ctx) {
-//        super.exitMore_func_inputs(ctx);
-//    }
-
-//    @Override
-//    public void enterReturn_st(ALMASParser.Return_stContext ctx) {
-//        super.enterReturn_st(ctx);
-//    }
-//
-//    @Override
-//    public void exitReturn_st(ALMASParser.Return_stContext ctx) {
-//        super.exitReturn_st(ctx);
-//    }
-
-//    @Override
-//    public void enterFunc_args(ALMASParser.Func_argsContext ctx) {
-//        super.enterFunc_args(ctx);
-//    }
-//
-//    @Override
-//    public void exitFunc_args(ALMASParser.Func_argsContext ctx) {
-//        super.exitFunc_args(ctx);
-//    }
-
-//    @Override
-//    public void enterMore_func_args(ALMASParser.More_func_argsContext ctx) {
-//        super.enterMore_func_args(ctx);
-//    }
-//
-//    @Override
-//    public void exitMore_func_args(ALMASParser.More_func_argsContext ctx) {
-//        super.exitMore_func_args(ctx);
-//    }
 
     @Override
     public void enterBoolean_cast(ALMASParser.Boolean_castContext ctx) {
         emit(JavaConstructsUtil.getBooleanCast(ctx));
     }
 
-//    @Override
-//    public void exitBoolean_cast(ALMASParser.Boolean_castContext ctx) {
-//        super.exitBoolean_cast(ctx);
-//    }
 
     @Override
     public void enterDecimal_cast(ALMASParser.Decimal_castContext ctx) {
         emit(JavaConstructsUtil.getDoubleCast(ctx));
     }
 
-//    @Override
-//    public void exitDecimal_cast(ALMASParser.Decimal_castContext ctx) {
-//        super.exitDecimal_cast(ctx);// TODO: 1/25/2022
-//    }
-
     @Override
     public void enterString_cast(ALMASParser.String_castContext ctx) {
         emit(JavaConstructsUtil.getStringCast(ctx));
     }
 
-//    @Override
-//    public void exitString_cast(ALMASParser.String_castContext ctx) {
-//
-//    }
-
-//    @Override
-//    public void enterPrimitive_type(ALMASParser.Primitive_typeContext ctx) {
-//
-//        emit(JavaConstructsUtil.getPrimitiveType(ctx));
-//    }
-
-//    @Override
-//    public void exitPrimitive_type(ALMASParser.Primitive_typeContext ctx) {
-//        super.exitPrimitive_type(ctx);
-//    }
     // general methods
 
     @Override
