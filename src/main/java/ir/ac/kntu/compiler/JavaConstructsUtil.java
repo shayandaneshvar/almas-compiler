@@ -231,7 +231,7 @@ public final class JavaConstructsUtil {
 
     public static String getFunctionCall(ALMASParser.Function_callContext ctx) {
         String result = FUNCTION_CALL.replace("FUNCTION_NAME", ctx.IDENTIFIER().getText());
-        return result.replace("INPUTS", translateExpression(ctx.func_args().getText())
+        return result.replace("INPUTS", translateExpression(ctx.func_args() == null ? "" : ctx.func_args().getText())
                 .replace("//", "/"));
     }
 

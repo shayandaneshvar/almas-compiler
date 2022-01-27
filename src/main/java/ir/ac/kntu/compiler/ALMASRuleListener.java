@@ -334,7 +334,7 @@ public class ALMASRuleListener extends ALMASBaseListener {
     private List<TerminalNode> getFunctionCallIdentifiers(ALMASParser.Function_callContext ctx) {
         List<TerminalNode> identifiers = new LinkedList<>();
 
-        if (ctx.func_args().IDENTIFIER() != null) {
+        if (ctx.func_args()!= null && ctx.func_args().IDENTIFIER() != null) {
             identifiers.add(ctx.func_args().IDENTIFIER());
 
             ALMASParser.More_func_argsContext moreFuncArg = ctx.func_args().more_func_args();
