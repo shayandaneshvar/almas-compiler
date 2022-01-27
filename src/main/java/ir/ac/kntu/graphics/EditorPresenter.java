@@ -137,7 +137,6 @@ public class EditorPresenter implements Initializable {
             BufferedReader en = new BufferedReader(new InputStreamReader(p.getErrorStream()));
             p.waitFor();
             System.out.println("en:" + en.readLine());
-//            p.waitFor();
             String error = en.readLine();
             if (error != null) {
                 terminalTextArea.setText(terminalTextArea.getText() + "\n" + "There are Errors on the Java Side: \n ");
